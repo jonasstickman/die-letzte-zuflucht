@@ -125,6 +125,8 @@
   #panel button.danger{background:#e5484d}
   #panel button.light{background:#e6e8f2;color:#1b1f4d}
   #panel label{display:block;font-size:13px;font-weight:700;margin:12px 0 4px}
+  #panel select{width:100%;box-sizing:border-box;border:1px solid #ccd;border-radius:8px;padding:9px;font-size:15px;background:#fff;color:#1b1f4d}
+  #panel input[type=range]{width:100%}
   #panel textarea{width:100%;box-sizing:border-box;border:1px solid #ccd;border-radius:8px;padding:8px;font-size:15px}
   #panel .row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
   #panel .row button{margin:0}
@@ -205,6 +207,10 @@
     <button data-a="voice" class="light" id="voiceBtn">🔊 Stimme</button>
     <button data-a="showc" class="light" id="showBtn">🎬 Nahaufnahmen</button>
   </div>
+  <label for="voiceSel">Welche Stimme?</label>
+  <select id="voiceSel"></select>
+  <label for="voiceRate">Tempo: <span id="rateVal">1.0</span></label>
+  <input id="voiceRate" type="range" min="0.7" max="1.4" step="0.05" value="1">
   <button data-a="vtest" class="light">Stimme testen</button>
   <button data-a="recon" class="light" id="reconBtn">TikTok neu verbinden</button>
   <button data-a="fs" class="light">Vollbild</button>
@@ -458,12 +464,27 @@ function updCards(t, dt){
 
 /* ---------- Stimme (Sprachausgabe des Geräts, Deutsch) ---------- */
 const OPT_KEY = 'zuflucht-optionen';
-const OPT = Object.assign({ voice:true, show:true }, (() => { try { return JSON.parse(localStorage.getItem(OPT_KEY)) || {}; } catch (e) { return {}; } })());
+const OPT = Object.assign({ voice:true, show:true, voiceName:'', rate:1.03 }, (() => { try { return JSON.parse(localStorage.getItem(OPT_KEY)) || {}; } catch (e) { return {}; } })());
 const saveOpt = () => { try { localStorage.setItem(OPT_KEY, JSON.stringify(OPT)); } catch (e) {} };
 const SS = window.speechSynthesis || null;
 let deVoice = null;
-function pickVoice(){ if (!SS) return; const vs = SS.getVoices();
-  deVoice = vs.find(v => /^de[-_]DE/i.test(v.lang) && /anna|petra|helena|markus|yannick|google/i.test(v.name)) || vs.find(v => /^de[-_]DE/i.test(v.lang)) || vs.find(v => /^de/i.test(v.lang)) || null; }
+const GOOD = /premium|enhanced|erweitert|verbessert|ottimizzat|natural|neural/i;
+function deVoices(){ if (!SS) return []; const vs = SS.getVoices(); const de = vs.filter(v => /^de/i.test(v.lang)); return de.length ? de : vs; }
+function pickVoice(){
+  const vs = deVoices();
+  deVoice = (OPT.voiceName && vs.find(v => v.name === OPT.voiceName))
+    || vs.find(v => /^de[-_]DE/i.test(v.lang) && GOOD.test(v.name))
+    || vs.find(v => /^de/i.test(v.lang) && GOOD.test(v.name))
+    || vs.find(v => /^de[-_]DE/i.test(v.lang) && /anna|petra|helena|markus|yannick|google/i.test(v.name))
+    || vs.find(v => /^de[-_]DE/i.test(v.lang)) || vs.find(v => /^de/i.test(v.lang)) || null;
+  fillVoices();
+}
+function fillVoices(){
+  const sel = document.getElementById('voiceSel'); if (!sel) return;
+  const vs = deVoices().slice().sort((a, b) => (GOOD.test(b.name) - GOOD.test(a.name)) || a.name.localeCompare(b.name));
+  if (!vs.length) { sel.innerHTML = '<option>keine Stimme gefunden</option>'; return; }
+  sel.innerHTML = vs.map(v => `<option value="${esc(v.name)}"${deVoice && v.name === deVoice.name ? ' selected' : ''}>${esc(v.name)} (${esc(v.lang)})${GOOD.test(v.name) ? ' ⭐' : ''}</option>`).join('');
+}
 if (SS) { pickVoice(); try { SS.addEventListener('voiceschanged', pickVoice); } catch (e) { SS.onvoiceschanged = pickVoice; } }
 const sayQ = []; let speaking = false, speakT = 0;
 function cleanName(n){
@@ -480,7 +501,7 @@ function nextSay(){
   if (speaking) return;
   const it = sayQ.shift(); if (!it) return;
   const u = new SpeechSynthesisUtterance(it.text);
-  if (deVoice) u.voice = deVoice; u.lang = deVoice ? deVoice.lang : 'de-DE'; u.rate = 1.03; u.pitch = 1;
+  if (deVoice) u.voice = deVoice; u.lang = deVoice ? deVoice.lang : 'de-DE'; u.rate = OPT.rate || 1.03; u.pitch = 1;
   speaking = true; speakT = now();
   const done = () => { if (!speaking) return; speaking = false; setTimeout(nextSay, 250); };
   u.onend = done; u.onerror = done;
@@ -866,7 +887,13 @@ function updStatus(){
     ? '<b>DEMO-Modus</b>: Testdaten im Zeitraffer, wird nicht gespeichert.'
     : LIVE ? `<b>Karte ↔ Server:</b> ${wsState}<br><b>TikTok:</b> ${esc(srv ? srv.state : '…')}${srv && srv.lastError ? `<br><small style="opacity:.6">${esc(srv.lastError)}</small>` : ''}${srv ? `<br><b>Ereignisse:</b> ${fmt(srv.events)}` : ''}` : '<b>Live-Verbindung:</b> noch nicht eingerichtet. Echte Daten werden auf diesem Gerät gespeichert.';
 }
-$('gear').onclick = () => { updStatus(); $('panel').classList.toggle('hidden'); };
+$('gear').onclick = () => { updStatus(); pickVoice(); $('panel').classList.toggle('hidden'); };
+$('voiceSel').addEventListener('change', e => { OPT.voiceName = e.target.value; saveOpt(); pickVoice();
+  if (SS) { sayQ.length = 0; try { SS.cancel(); } catch (x) {} speaking = false; }
+  const was = OPT.voice; OPT.voice = true; say('Danke fürs Folgen, Lisa! Willkommen in der letzten Zuflucht.', 9); OPT.voice = was; });
+$('voiceRate').value = OPT.rate || 1.03; $('rateVal').textContent = (+$('voiceRate').value).toFixed(2);
+$('voiceRate').addEventListener('input', e => { OPT.rate = +e.target.value; $('rateVal').textContent = OPT.rate.toFixed(2); saveOpt(); });
+$('voiceRate').addEventListener('change', () => { const was = OPT.voice; OPT.voice = true; say('So schnell spreche ich jetzt.', 9); OPT.voice = was; });
 let resetArm = 0;
 $('panel').addEventListener('click', ev => {
   const b = ev.target.closest('button'); if (!b) return;
