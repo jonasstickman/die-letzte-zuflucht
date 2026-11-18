@@ -555,14 +555,17 @@ function thankFollow(p){
 /* ---------- Nahaufnahme: Kamera fliegt zum Haus, großer Text ---------- */
 const SHOW = { cur:null, until:0, q:[] };
 // Die Stimme wird erst gesprochen, wenn die Kamera bei genau diesem Haus ankommt.
-function showcase(p, big, small, voice, prio = 2, ms = 5500){
+function showcase(p, big, small, voice, prio = 2, ms = 5500, o = {}){
   if (!p) return;
   if (!OPT.show) { focus(p, ms, voice); return; }
-  if (SHOW.cur && SHOW.cur.p === p) { Object.assign(SHOW.cur, { big, small }); SHOW.until = Math.max(SHOW.until, now() + ms * .8); renderShow(); if (voice) sayNow(voice); return; }
+  if (SHOW.cur && SHOW.cur.p === p) {
+    if (SHOW.cur.up && !SHOW.cur.done) { SHOW.cur.fin = { big, small }; if (voice) SHOW.cur.voice = voice; return; }
+    Object.assign(SHOW.cur, { big, small }); SHOW.until = Math.max(SHOW.until, now() + ms * .8); renderShow(); if (voice) sayNow(voice); return; }
   const ex = SHOW.q.find(x => x.p === p);
-  if (ex) { Object.assign(ex, { big, small, ms: Math.max(ex.ms, ms), prio: Math.max(ex.prio, prio) }); if (voice) ex.voice = voice; return; }
-  if (SHOW.q.length >= 4) { let i = -1, lo = prio; SHOW.q.forEach((x, j) => { if (x.prio < lo) { lo = x.prio; i = j; } }); if (i < 0) return; SHOW.q.splice(i, 1); }
-  SHOW.q.push({ p, big, small, ms, prio, voice: voice || null });
+  if (ex) { Object.assign(ex, { big, small, ms: Math.max(ex.ms, ms), prio: Math.max(ex.prio, prio) }); if (voice) ex.voice = voice;
+    if (o.up) { ex.up = true; if (ex.st0 === undefined) ex.st0 = o.st0; } return; }
+  if (SHOW.q.length >= 4) { let i = -1, lo = prio; SHOW.q.forEach((x, j) => { if (x.prio < lo) { lo = x.prio; i = j; } }); if (i < 0) { if (o.up) houseDirty = true; return; } SHOW.q.splice(i, 1); houseDirty = true; }
+  SHOW.q.push({ p, big, small, ms, prio, voice: voice || null, up: !!o.up, st0: o.st0 });
 }
 // Satz an ein Haus hängen, das schon gezeigt wird oder in der Warteschlange steht
 function voiceFor(p, text){
@@ -577,9 +580,29 @@ function updShow(t){
   if (SHOW.cur && t < SHOW.until) return;
   const n = SHOW.q.shift();
   if (!n) { if (SHOW.cur) { SHOW.cur = null; document.body.classList.remove('showing'); const el = $('show'); el.firstChild && el.firstChild.classList.add('out'); setTimeout(() => { if (!SHOW.cur) el.innerHTML = ''; }, 350); } return; }
-  SHOW.cur = n; SHOW.until = t + n.ms; document.body.classList.add('showing'); renderShow();
-  if (n.voice) { sayNow(n.voice); n.voice = null; }
+  SHOW.cur = n; SHOW.until = t + n.ms; document.body.classList.add('showing');
+  if (n.up) {
+    // Ausbau: Kamera fliegt zum alten Haus → Baustelle → neues Haus → erst dann Text und Stimme
+    n.buildAt = t + CAM_ARRIVE; n.doneAt = n.buildAt + BUILD_MS;
+    SHOW.until = Math.max(SHOW.until, n.doneAt + 3500);
+    n.fin = { big: n.big, small: n.small }; n.big = '🔨 BAUSTELLE!'; n.small = `@${n.p.n} baut aus …`;
+  }
+  renderShow();
+  if (n.voice && !n.up) { sayNow(n.voice); n.voice = null; }
 }
+// läuft jedes Bild: Baustelle starten / fertig melden
+function updBuild(t){
+  const c = SHOW.cur; if (!c || !c.up) return;
+  if (!c.started && t >= c.buildAt) { c.started = true; houseDirty = true; }
+  if (!c.done && t >= c.doneAt) { c.done = true; c.big = c.fin.big; c.small = c.fin.small; renderShow(); if (c.voice) { sayNow(c.voice); c.voice = null; } }
+}
+// Soll das Haus dieser Person noch nicht umgebaut werden? (Kamera ist noch nicht da)
+function buildHeld(p){
+  if (!OPT.show) return false;
+  if (SHOW.cur && SHOW.cur.p === p) return SHOW.cur.up && !SHOW.cur.started;
+  return SHOW.q.some(x => x.p === p && x.up);
+}
+const CAM_ARRIVE = 1100, BUILD_MS = 2400;
 
 /* ---------- Spiel-Logik ---------- */
 function addPerson(u, name){
@@ -605,15 +628,15 @@ function checkGoal(){
 function addPts(p){
   const st = stage(p); if (p.st === undefined) p.st = 0;
   if (st > p.st) {
-    const first = p.st === 0;
-    p.st = st; p.lu = now(); houseDirty = true;
+    const first = p.st === 0, st0 = p.st;
+    p.st = st; p.lu = now(); houseDirty = true; // die Baustelle wartet, bis die Kamera da ist (buildHeld)
     const s = STAGES[st];
     feed(`${s.e} ${p.n}: Stufe ${st+1} · ${s.n}!`, true);
     if (first) feed(`🛖 ${p.n}: jetzt gehen Extras – z. B. !hund oder !garten`);
     const nm = cleanName(p.n);
     showcase(p, first ? '🛖 RAUS AUS DEM ZELT!' : `${s.e} HAUS AUSGEBAUT!`, `@${p.n} · Stufe ${st+1} · ${s.n}`,
       first ? `${nm} zieht aus dem Zelt aus. Neu: ${s.n}!` : pick([`${nm} hat das Haus ausgebaut! Neu: ${s.n}.`, `Glückwunsch, ${nm}! Dein neues Zuhause: ${s.n}.`, `Stark, ${nm}! Ab jetzt: ${s.n}.`]),
-      st >= 7 ? 3 : 2, 6500);
+      st >= 7 ? 3 : 2, 7500, { up: true, st0 });
   }
   dirty = true;
 }
@@ -1557,6 +1580,7 @@ const R3 = (() => {
       const key = houseKey(p);
       const h = houses.get(p.no);
       if (h && (h.key === key || h.scaffold)) return;
+      if (!full && buildHeld(p)) return; // erst bauen, wenn die Kamera da ist (updBuild meldet sich dann)
       if (!full && (!h || p.st > h.st)) {
         // Gerüst aufbauen, dann neues Haus
         const q = pos[k], sc = makeScaffold(); sc.position.set(q.x, 0, q.y); sc.rotation.y = Math.atan2(q.x, q.y); scene.add(sc);
@@ -1735,7 +1759,7 @@ const R3 = (() => {
     for (const k in bigs) { const b = bigs[k]; b.g.scale.setScalar(popS(Math.min(1, (t - b.t)/900))); }
     houses.forEach((h, no) => {
       if (h.scaffold) {
-        const a = (t - h.scaffold.t) / 1600, sg = h.scaffold.g;
+        const a = (t - h.scaffold.t) / BUILD_MS, sg = h.scaffold.g;
         sg.scale.set(1, Math.min(1, a*3), 1);
         if (a >= 1) { scene.remove(sg); const { p, k } = h.scaffold; h.scaffold = null; if (S.people[k] === p) { placeHouse(p, k, true); const q = pos[k]; burst(q.x, q.y); } else houses.delete(no); }
         return;
@@ -1849,7 +1873,8 @@ function bigLabel(t){
   ctx.fillStyle = 'rgba(27,31,77,.92)'; rr(x - w/2, y - 46, w, 34, 17); ctx.fill();
   ctx.fillStyle = '#ffffff'; ctx.fillText(l1, x, y - 28);
   ctx.font = '15px "Lilita One",system-ui,sans-serif';
-  const l2 = `Stufe ${(p.st || 0) + 1} · ${STAGES[p.st || 0].n}${p.job ? ' · ' + JOBS[p.job].e + ' ' + jobLabel(p) : ''}`, w2 = ctx.measureText(l2).width + 20;
+  const sc = SHOW.cur && SHOW.cur.p === p && SHOW.cur.up && !SHOW.cur.done ? (SHOW.cur.st0 || 0) : (p.st || 0);
+  const l2 = `Stufe ${sc + 1} · ${STAGES[sc].n}${p.job ? ' · ' + JOBS[p.job].e + ' ' + jobLabel(p) : ''}`, w2 = ctx.measureText(l2).width + 20;
   ctx.fillStyle = '#ffd23f'; rr(x - w2/2, y - 10, w2, 22, 11); ctx.fill();
   ctx.fillStyle = '#1b1f4d'; ctx.fillText(l2, x, y + 1);
 }
@@ -1866,7 +1891,7 @@ let helpI = -1, helpT = -1e9;
 let lastHud = 0, decayAcc = 0, storyAcc = 0;
 function update(dt, t){
   const tm = T();
-  updShow(t); updFocus(t, dt); updCards(t, dt);
+  updShow(t); updBuild(t); updFocus(t, dt); updCards(t, dt);
   S.phaseT += dt;
   if (!S.night && S.phaseT > tm.day) startNight();
   else if (S.night && S.phaseT > tm.night) endNight();
