@@ -53,8 +53,10 @@
   .mini .ln{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.55}
   .mini .ln i{opacity:.6;font-style:normal;font-size:.85em}
   .mini b{font-weight:normal;color:#ffd23f}
+  .mini .bp{float:right;color:#ffd23f}
   .rk{display:inline-block;width:1.3em;height:1.3em;line-height:1.3em;text-align:center;border-radius:5px;background:#ffd23f;color:#1b1f4d;margin-right:.35em;font-size:.85em}
-  #focus{width:100%;box-sizing:border-box;padding:1vh 1.4vh 1.1vh;background:rgba(240,242,252,.97);color:#1b1f4d;animation:pop .4s cubic-bezier(.2,1.5,.4,1) both}
+  #helpBox{animation:pop .4s ease both}
+  #focus,#card{width:100%;box-sizing:border-box;padding:1vh 1.4vh 1.1vh;background:rgba(240,242,252,.97);color:#1b1f4d;animation:pop .4s cubic-bezier(.2,1.5,.4,1) both}
   .fRow{display:flex;align-items:center;gap:.7em}
   .av{width:2.3em;height:2.3em;border-radius:50%;background:#3e63dd;color:#fff;display:grid;place-items:center;font-size:clamp(14px,2vh,22px);flex:none}
   .fMain{flex:1;min-width:0}
@@ -66,6 +68,31 @@
   .track.big i{background:linear-gradient(90deg,#ff5a8a,#ffd23f)}
   .fNext{font-family:system-ui,sans-serif;font-size:clamp(10px,1.3vh,14px);margin-top:.6vh;text-align:center;opacity:.85}
   .fNext b{font-weight:800}
+  .fUp{font-size:clamp(14px,2vh,22px);letter-spacing:.1em;margin-top:.3vh}
+
+  /* Ereignis-Karten (Ausweis, Gesucht, Gebaut …) */
+  .cTag{display:inline-block;font-size:clamp(10px,1.3vh,14px);padding:.1em .6em;border-radius:6px;background:#ffd23f;color:#1b1f4d}
+  .cTag.red{background:#e5484d;color:#fff}.cTag.green{background:#46c96b;color:#fff}.cTag.blue{background:#3e63dd;color:#fff}.cTag.navy{background:#1b1f4d;color:#fff}
+  .cBig{font-size:clamp(17px,2.5vh,28px);line-height:1.15}
+  .cSub{font-family:system-ui,sans-serif;font-size:clamp(10px,1.35vh,14px);opacity:.75}
+  .cSub b{font-weight:800;opacity:1}
+  .cHead{display:flex;justify-content:space-between;align-items:center;font-size:clamp(11px,1.45vh,15px);color:#e5484d;margin-bottom:.6vh}
+  .cHead span{color:#1b1f4d;opacity:.55;font-size:.85em}
+  .cIco{width:2.3em;height:2.3em;border-radius:12px;background:#1b1f4d;color:#fff;display:grid;place-items:center;font-size:clamp(16px,2.3vh,26px);flex:none}
+  .cIco.gold{background:#ffd23f}
+  .ok{background:#46c96b;color:#fff;border-radius:8px;padding:.2em .6em;font-size:clamp(11px,1.45vh,16px);flex:none}
+  .bubble{font-family:system-ui,sans-serif;font-weight:700;font-size:clamp(13px,1.8vh,19px);margin-top:.2vh}
+  .idLine{display:grid;grid-template-columns:auto 1fr;gap:.1em .6em;font-family:system-ui,sans-serif;font-size:clamp(11px,1.45vh,15px);margin-top:.2vh}
+  .idLine b{font-weight:800}
+  .stripe{height:.9vh;min-height:6px;border-radius:6px;margin-top:.8vh;background:repeating-linear-gradient(90deg,#3e63dd 0 12px,#dfe4ff 12px 24px)}
+
+  /* Nahaufnahme: Haus groß im Bild */
+  #info,#focus,#card,#goal,#bottom,#watch{transition:opacity .45s ease}
+  body.showing #info,body.showing #focus,body.showing #card,body.showing #goal,body.showing #bottom,body.showing #watch{opacity:0}
+  #show{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 10vh);text-align:center;pointer-events:none;z-index:3;padding:0 4vw}
+  #show .big{font-size:clamp(30px,5.6vh,66px);line-height:1.05;color:#fff;
+    text-shadow:0 .07em 0 #1b1f4d,.07em 0 0 #1b1f4d,-.07em 0 0 #1b1f4d,0 -.07em 0 #1b1f4d,.05em .05em 0 #1b1f4d,-.05em .05em 0 #1b1f4d,.05em -.05em 0 #1b1f4d,-.05em -.05em 0 #1b1f4d,0 .14em 0 rgba(0,0,0,.25)}
+  #show .small{display:inline-block;margin-top:1vh;font-size:clamp(16px,2.5vh,28px);background:#ffd23f;color:#1b1f4d;padding:.3em .9em;border-radius:99px}
   #bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 1.8vh);width:min(94vw,640px);display:flex;flex-direction:column;gap:.8vh;z-index:2;pointer-events:none}
   #feed{display:flex;flex-direction:column;gap:.6vh;align-items:flex-start;min-height:1px}
   .fi{background:var(--navy);padding:.3em .85em;border-radius:99px;font-size:clamp(11px,1.55vh,18px);animation:fin .35s cubic-bezier(.2,1.4,.4,1) both;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -84,6 +111,7 @@
   .opt>*:not(.fill){position:relative}
   .letter{background:var(--gold);color:#1b1f4d;border-radius:9px;text-align:center;line-height:1.5em}
   .opt small{font-family:system-ui,sans-serif;font-weight:700;opacity:.7;font-size:.6em;margin-left:.4em}
+  .opt .d{display:block;font-family:system-ui,sans-serif;font-size:.58em;opacity:.65;font-weight:600;margin-top:-.1em}
   .pct{min-width:2.6em;text-align:right}
   .timer{height:.45vh;min-height:3px;background:rgba(255,255,255,.15);border-radius:99px;margin-top:1vh;overflow:hidden}
   .timer i{display:block;height:100%;background:var(--gold);width:100%}
@@ -114,6 +142,7 @@
       <span class="chip" id="cPop">👥 0 Überlebende</span>
       <span class="chip" id="cRes">🧱 0</span>
       <span class="chip" id="cLikes">❤️ 0</span>
+      <span class="chip" id="cWall">🪵 Seilzaun</span>
     </div>
     <div class="bars">
       <div>🥫 Essen<div class="track"><i id="bEssen" style="background:#f5a623"></i></div></div>
@@ -123,15 +152,10 @@
     </div>
   </div>
   <div id="goal" class="pill"></div>
+  <div id="card" class="card hidden"></div>
   <div id="info" class="info">
-    <div class="card mini"><h5>🏆 GRÖSSTE HÄUSER</h5><div id="topList"><div class="ln">Noch niemand – schick ein Geschenk!</div></div></div>
-    <div class="card mini"><h5>🏗️ SO BAUST DU</h5>
-      <div class="ln">💎 1 Münze = <b>1 Baupunkt</b></div>
-      <div class="ln">❤️ 20 Likes = <b>1 Baupunkt</b></div>
-      <div class="ln">💬 <b>haus</b> → dein Haus zeigen</div>
-      <div class="ln">🎨 <b>!farbe rot</b> · 🐶 <b>!hund</b> <i>ab Stufe 3</i></div>
-      <div class="ln">🐉 <b>!drache</b> <i>ab Stufe 15</i></div>
-    </div>
+    <div class="card mini"><h5>🏆 MEISTE BAUPUNKTE</h5><div id="topList"><div class="ln">Noch niemand – schreib einen Kommentar!</div></div></div>
+    <div class="card mini"><div id="helpBox"></div></div>
   </div>
   <div id="focus" class="card hidden">
     <div class="fRow"><div class="av" id="fAv">?</div><div class="fMain"><div class="fName" id="fName"></div><div class="fSt" id="fSt"></div></div><div class="fBadge hidden" id="fBadge">LEVEL UP!</div></div>
@@ -146,12 +170,13 @@
 </div>
 
 <div id="announce"></div>
+<div id="show"></div>
 
 <div id="bottom">
   <div id="feed"></div>
-  <div id="cta" class="pill">➕ Folgen = dein Zelt im Camp · Schreib <b style="color:#ffd23f;font-weight:normal">A, B</b> oder <b style="color:#ffd23f;font-weight:normal">C</b></div>
+  <div id="cta" class="pill">➕ Folgen = dein Zelt · 💬 Kommentar = Baupunkt · Stimm ab mit <b style="color:#ffd23f;font-weight:normal">A, B</b> oder <b style="color:#ffd23f;font-weight:normal">C</b></div>
   <div id="vote" class="card">
-    <div class="vh"><span>🗳️ ABSTIMMUNG</span><span id="vCount">0 Stimmen</span></div>
+    <div class="vh"><span id="vHead">🗳️ ABSTIMMUNG</span><span id="vCount">0 Stimmen</span></div>
     <div class="q" id="vQ">…</div>
     <div id="vOpts"></div>
     <div class="timer"><i id="vTimer"></i></div>
@@ -172,6 +197,15 @@
     <button data-a="f1" class="light">+1 Test-Follower</button>
     <button data-a="gift" class="light">+ Test-Geschenk</button>
   </div>
+  <div class="row" style="margin-top:6px">
+    <button data-a="cmd" class="light">Kommandant ernennen</button>
+    <button data-a="story" class="light">Ereignis zeigen</button>
+  </div>
+  <div class="row" style="margin-top:6px">
+    <button data-a="voice" class="light" id="voiceBtn">🔊 Stimme</button>
+    <button data-a="showc" class="light" id="showBtn">🎬 Nahaufnahmen</button>
+  </div>
+  <button data-a="vtest" class="light">Stimme testen</button>
   <button data-a="recon" class="light" id="reconBtn">TikTok neu verbinden</button>
   <button data-a="fs" class="light">Vollbild</button>
   <label for="names">Follower eintragen (ein Name pro Zeile)</label>
@@ -196,6 +230,7 @@ const pick = a => a[Math.floor(Math.random()*a.length)];
 const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
 const fmt = n => Math.round(n).toLocaleString('de-DE');
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
 /* ---------- Speicher ---------- */
 const KEY = 'camp-morgenrot-v1';
@@ -203,18 +238,55 @@ const store = {
   get(){ try { return JSON.parse(localStorage.getItem(KEY)); } catch(e){ return null; } },
   set(v){ try { localStorage.setItem(KEY, JSON.stringify(v)); } catch(e){} }
 };
-function fresh(){ return { day:1, people:[], res:0, likes:0, likeBank:0, stats:{essen:60,wasser:60,vert:25,moral:70}, built:[], voteN:0, phaseT:0, night:false, watch:[], milestone:0 }; }
-let S = store.get() || fresh();
+function fresh(){ return { day:1, people:[], res:0, likes:0, likeBank:0, cBank:0, stats:{essen:60,wasser:60,vert:25,moral:70}, built:[], plaza:[], walls:[], wallLv:0, cmd:null, cmdApp:{}, voteN:0, phaseT:0, night:false, watch:[], milestone:0 }; }
+function load(){
+  const s = store.get(); if (!s) return null;
+  const f = fresh(); const S2 = Object.assign(f, s);
+  S2.stats = Object.assign(fresh().stats, s.stats || {});
+  ['built','plaza','walls','people','watch'].forEach(k => { if (!Array.isArray(S2[k])) S2[k] = []; });
+  if (!S2.cmdApp || typeof S2.cmdApp !== 'object') S2.cmdApp = {};
+  if (S2.built.includes('mauer') && S2.wallLv < 1) S2.wallLv = 1;
+  return S2;
+}
+let S = load() || fresh();
 let byUser = {};
 let demo = false, dirty = false;
 const LIVE = !!window.CAMP_LIVE_WS;
 
 /* ---------- Inhalte ---------- */
-const VOTES = [
-  { q:'Was bauen wir als Nächstes?', o:[
-    {l:'Brunnen ausbauen', e:'⛲', fx:{wasser:20}, b:'brunnen', c:15},
-    {l:'Wachturm', e:'🗼', fx:{vert:20}, b:'turm', c:20},
-    {l:'Gemüsefeld', e:'🥕', fx:{essen:20}, b:'feld', c:15} ]},
+// kleine Bauten rund ums Lagerfeuer
+const SMALL = {
+  brunnen:{l:'Brunnen ausbauen', e:'⛲', d:'mehr Wasser', fx:{wasser:20}, c:15},
+  turm:{l:'Wachturm', e:'🗼', d:'sieht die Horde früher', fx:{vert:20}, c:20},
+  feld:{l:'Gemüsefeld', e:'🥕', d:'frisches Essen', fx:{essen:20}, c:15},
+  tonnen:{l:'Regentonnen', e:'🛢️', d:'Wasser sammeln', fx:{wasser:15}, c:10},
+  doener:{l:'Döner-Stand', e:'🥙', d:'wie früher', fx:{moral:25, essen:5}, c:40},
+  fussball:{l:'Fußballplatz', e:'⚽', d:'Spaß für alle', fx:{moral:15}, c:25},
+  kino:{l:'Kino-Zelt', e:'🎬', d:'Filmabend', fx:{moral:20}, c:30},
+  funk:{l:'Funkturm', e:'📡', d:'Kontakt nach draußen', fx:{moral:12}, c:30},
+};
+// große Gebäude auf dem Platz
+const BIG = {
+  militaer:{l:'Militärbasis', e:'🪖', d:'Soldaten & Panzer', c:60, fx:{vert:25}},
+  krankenhaus:{l:'Krankenhaus', e:'🏥', d:'Ärzte & Betten', c:50, fx:{moral:15}},
+  polizei:{l:'Polizeiwache', e:'🚓', d:'mit Zellen', c:40, fx:{vert:10, moral:5}},
+  restaurant:{l:'Restaurant', e:'🍝', d:'Essen gehen wie früher', c:35, fx:{moral:15, essen:10}},
+  werkstatt:{l:'Werkstatt', e:'🔧', d:'Autos reparieren', c:30, fx:{vert:5, moral:5}},
+  gewaechshaus:{l:'Gewächshaus', e:'🌿', d:'Gemüse das ganze Jahr', c:30, fx:{essen:25}},
+  solar:{l:'Solarpark', e:'☀️', d:'Strom fürs Camp', c:45, fx:{moral:10}},
+  schule:{l:'Schule', e:'🏫', d:'Unterricht für die Kinder', c:40, fx:{moral:15}},
+};
+const BUILD = {
+  brunnen:{x:-62, y:-30}, turm:{x:68, y:-48}, feld:{x:-58, y:56}, tonnen:{x:30, y:74},
+  doener:{x:2, y:-86}, fussball:{x:74, y:40}, kino:{x:-88, y:4}, funk:{x:88, y:-6}
+};
+const WALLS = [
+  {n:'Seilzaun', e:'🪢'}, {n:'Holzpalisade', e:'🪵', c:25, fx:{vert:15}}, {n:'Steinmauer', e:'🧱', c:60, fx:{vert:20}}, {n:'Festungsmauer', e:'🏰', c:120, fx:{vert:25}}];
+// Viertel: wer früh einzieht, wohnt weiter innen
+const BANDS = [100, 500, 1500, 3000, 6000];
+const bandName = b => b === 0 ? 'Gründerhof' : `${b}. Außenring`;
+const district = no => { for (let b = 0; b < BANDS.length; b++) if (no <= BANDS[b]) return bandName(b); return 'Neuland'; };
+const EVENTS = [
   { q:'Fremde stehen am Tor…', o:[
     {l:'Reinlassen', e:'🤝', fx:{moral:12, essen:-6}},
     {l:'Wegschicken', e:'🚫', fx:{moral:-6, vert:4}},
@@ -223,38 +295,75 @@ const VOTES = [
     {l:'Jagdtrupp losschicken', e:'🏹', fx:{essen:15, moral:-4}},
     {l:'Rationieren', e:'⚖️', fx:{essen:6, wasser:6, moral:-10}},
     {l:'Supermarkt plündern', e:'🛒', fx:{essen:25, wasser:10, vert:-12}} ]},
-  { q:'Womit sichern wir das Camp?', o:[
-    {l:'Holzpalisade', e:'🪵', fx:{vert:18}, b:'mauer', c:25},
-    {l:'Fallen graben', e:'🪤', fx:{vert:10}, b:'fallen', c:10},
-    {l:'Regentonnen', e:'🛢️', fx:{wasser:15}, b:'tonnen', c:10} ]},
+  { q:'Expedition in die zerstörte Stadt – wohin?', o:[
+    {l:'Baumarkt', e:'🔨', d:'Material für Bauten', fx:{res:20, moral:-3}},
+    {l:'Apotheke', e:'💊', d:'Medizin', fx:{moral:12}},
+    {l:'Tankstelle', e:'⛽', d:'Sprit & Snacks', fx:{essen:10, moral:5}} ]},
   { q:'Heute Abend am Lagerfeuer…', o:[
     {l:'Geschichten erzählen', e:'📖', fx:{moral:15}},
     {l:'Waffen schmieden', e:'⚒️', fx:{vert:10, moral:-2}},
     {l:'Früh schlafen', e:'😴', fx:{essen:4, wasser:4, moral:4}} ]},
-  { q:'Was bringt Freude ins Camp?', o:[
-    {l:'Döner-Stand', e:'🥙', fx:{moral:25, essen:5}, b:'doener', c:40},
-    {l:'Fußballplatz', e:'⚽', fx:{moral:15}, b:'fussball', c:25},
-    {l:'Kino-Zelt', e:'🎬', fx:{moral:20}, b:'kino', c:30} ]},
+  { q:'Jemand ist gerade so entkommen…', o:[
+    {l:'Sofort aufnehmen', e:'🫂', fx:{moral:10, vert:-4}},
+    {l:'In Quarantäne', e:'🩹', d:'sicher ist sicher', fx:{vert:6}},
+    {l:'Verhören', e:'❓', d:'was weiß er?', fx:{vert:4, moral:-2}} ]},
   { q:'Ein Funkspruch kommt rein…', o:[
     {l:'Antworten', e:'📻', fx:{moral:10, vert:-5}},
     {l:'Ignorieren', e:'🙉', fx:{vert:5}},
-    {l:'Funkturm bauen', e:'📡', fx:{moral:12}, b:'funk', c:30} ]},
+    {l:'Mitschneiden', e:'🎧', d:'vielleicht ein Hinweis', fx:{moral:4, vert:2}} ]},
 ];
-const BUILD = {
-  brunnen:{e:'⛲', x:-62, y:-30, s:34}, turm:{e:'🗼', x:68, y:-48, s:40}, feld:{e:'🥕', x:-58, y:56, s:22, field:true},
-  tonnen:{e:'🛢️', x:30, y:74, s:22}, doener:{e:'🥙', x:2, y:-86, s:30}, fussball:{e:'⚽', x:74, y:40, s:24},
-  kino:{e:'🎬', x:-88, y:4, s:26}, funk:{e:'📡', x:88, y:-6, s:28}
-};
-const GOALS = [[10,'Lagerfeuer-Fest 🎉'],[50,'Wachturm 🗼'],[100,'Fußballplatz ⚽'],[250,'Gemüsegarten 🥕'],[500,'Gründerhof komplett ⭐'],[1000,'Funkturm 📡'],[2500,'Krankenstation 🏥'],[5000,'Döner-Stand 🥙'],[10000,'Armee gegen die Horde ⚔️']];
-const GOAL_BUILD = {50:'turm',100:'fussball',250:'feld',1000:'funk',5000:'doener'};
+const GOALS = [[10,'Lagerfeuer-Fest 🎉'],[50,'Wachturm 🗼'],[100,'Gründerhof komplett ⭐'],[250,'Gemüsefeld 🥕'],[500,'1. Außenring komplett 🧱'],[1000,'Funkturm 📡'],[2500,'Fußballplatz ⚽'],[5000,'Döner-Stand 🥙'],[10000,'Armee gegen die Horde ⚔️']];
+const GOAL_BUILD = {50:'turm',250:'feld',1000:'funk',2500:'fussball',5000:'doener'};
 const STAGES = [
   {n:'Zelt',p:0,e:'⛺'},{n:'Holzhütte',p:1,e:'🛖'},{n:'Blockhütte',p:5,e:'🪵'},{n:'Steinhaus',p:15,e:'🧱'},{n:'Fachwerkhaus',p:40,e:'🏠'},
   {n:'Landhaus',p:100,e:'🏡'},{n:'Stadthaus',p:200,e:'🏘️'},{n:'Villa',p:400,e:'🏖️'},{n:'Herrenhaus',p:800,e:'🏛️'},{n:'Turmhaus',p:1500,e:'🗼'},
   {n:'Festung',p:3000,e:'🛡️'},{n:'Burg',p:5000,e:'🏰'},{n:'Schloss',p:8000,e:'🏯'},{n:'Palast',p:12000,e:'👑'},{n:'Drachenburg',p:20000,e:'🐉'}];
-const LIKES_PER_BP = 20;
-const pts = p => (p.g || 0) + Math.floor((p.l || 0) / LIKES_PER_BP);
+const LIKES_PER_BP = 20, COMMENT_COOLDOWN = 8000;
+const pts = p => (p.g || 0) + (p.k || 0) + Math.floor((p.l || 0) / LIKES_PER_BP);
 const stage = p => { const v = pts(p); let i = 0; while (i + 1 < STAGES.length && v >= STAGES[i+1].p) i++; return i; };
 const FARBEN = {rot:'#d9483b', blau:'#3e63dd', 'grün':'#46a758', gruen:'#46a758', gold:'#f5b301', lila:'#8e4ec6', pink:'#e85d9c', schwarz:'#2b2b33', 'weiß':'#f4f4f4', weiss:'#f4f4f4', orange:'#f76b15', 'türkis':'#12a594', tuerkis:'#12a594'};
+// Extras fürs eigene Haus (min = Stufen-Index, angezeigt als Stufe min+1)
+const UPG = {
+  garten:{e:'🌱', n:'Gemüsegarten', min:1, msg:'pflanzt einen Garten', say:'hat jetzt einen eigenen Gemüsegarten!'},
+  zaun:{e:'🪵', n:'Gartenzaun', min:1, msg:'baut einen Zaun ums Haus', say:'hat einen Zaun ums Haus gebaut!'},
+  hund:{e:'🐶', n:'Hund', min:1, pet:true, msg:'hat jetzt einen Hund', say:'hat jetzt einen Hund!'},
+  katze:{e:'🐱', n:'Katze', min:1, pet:true, msg:'hat jetzt eine Katze', say:'hat jetzt eine Katze!'},
+  flagge:{e:'🚩', n:'Flagge', min:1, msg:'hisst seine Flagge', say:'hat seine eigene Flagge gehisst!'},
+  motorrad:{e:'🏍️', n:'Motorrad', min:2, msg:'fährt jetzt Motorrad', say:'hat sich ein Motorrad gekauft!'},
+  auto:{e:'🚗', n:'Auto', min:2, msg:'hat jetzt ein Auto', say:'hat sich ein Auto gekauft!'},
+  solar:{e:'☀️', n:'Solaranlage', min:3, msg:'hat jetzt Solarstrom', say:'hat jetzt Solarstrom auf dem Dach!'},
+  wachturm:{e:'🗼', n:'eigener Wachturm', min:5, msg:'baut einen eigenen Wachturm', say:'hat einen eigenen Wachturm gebaut!'},
+  drache:{e:'🐉', n:'Drache', min:14, msg:'ruft seinen Drachen', say:'ruft seinen Drachen! Achtung, alle in Deckung!'},
+};
+const UPG_ALIAS = {garage:'auto', car:'auto', moped:'motorrad', bike:'motorrad', dog:'hund', cat:'katze', fahne:'flagge', beet:'garten', solaranlage:'solar', turm:'wachturm', dragon:'drache'};
+const upList = p => Object.keys(UPG).filter(k => k === 'drache' ? p.drache : UPG[k].pet ? p.pet === k : p.up && p.up[k]);
+// Berufe
+const JOBS = {
+  soldat:{e:'🪖', n:'Soldat', at:'militaer', col:'#5b6b3a', hat:'#3f4a2a'},
+  sniper:{e:'🎯', n:'Scharfschütze', at:'militaer', col:'#3f4a2a', hat:'#2b331d'},
+  arzt:{e:'🩺', n:'Arzt', at:'krankenhaus', col:'#f4f4f4', hat:'#3aa0ff'},
+  polizei:{e:'👮', n:'Polizist', at:'polizei', col:'#1f3a8a', hat:'#14244f'},
+  koch:{e:'👨‍🍳', n:'Koch', at:'restaurant', col:'#f4f4f4', hat:'#ffffff'},
+  mechaniker:{e:'🔧', n:'Mechaniker', at:'werkstatt', col:'#f76b15', hat:'#2b2f3a'},
+  bauer:{e:'🌾', n:'Bauer', at:'gewaechshaus', col:'#8b5a2b', hat:'#e0c070'},
+  lehrer:{e:'📚', n:'Lehrer', at:'schule', col:'#8e4ec6', hat:'#5a2f8a'},
+  techniker:{e:'⚡', n:'Techniker', at:'solar', col:'#ffc53d', hat:'#f5b301'},
+  wache:{e:'🔦', n:'Wache', at:'gate', col:'#2b2f3a', hat:'#1a1a1a'},
+  forscher:{e:'🧪', n:'Forscher', at:null, col:'#12a594', hat:'#f4f4f4'},
+  jaeger:{e:'🏹', n:'Jäger', at:null, col:'#6b4423', hat:'#3f6b2a'},
+  handwerker:{e:'🔨', n:'Handwerker', at:null, col:'#ffc53d', hat:'#ff8a00'},
+};
+const JOBWORDS = [
+  [/^(soldat(in)?|soldaten|soldier)$/, 'soldat'], [/^(scharfsch(ü|ue)tze?(in)?|sniper)$/, 'sniper'],
+  [/^((ä|ae)rzt(in)?|arzt|mediziner(in)?|sanit(ä|ae)ter(in)?|krankenschwester|krankenpfleger(in)?|pfleger(in)?|doktor|doc)$/, 'arzt'],
+  [/^(polizist(in)?|polizei|sheriff|cop)$/, 'polizei'], [/^(koch|k(ö|oe)chin)$/, 'koch'], [/^mechaniker(in)?$/, 'mechaniker'],
+  [/^(bauer|b(ä|ae)uerin|farmer(in)?|g(ä|ae)rtner(in)?)$/, 'bauer'], [/^lehrer(in)?$/, 'lehrer'],
+  [/^(techniker(in)?|elektriker(in)?|ingenieur(in)?)$/, 'techniker'], [/^(wache|w(ä|ae)chter(in)?|nachtwache|torwache)$/, 'wache'],
+  [/^(forscher(in)?|wissenschaftler(in)?|chemiker(in)?)$/, 'forscher'], [/^(j(ä|ae)ger(in)?)$/, 'jaeger'],
+  [/^(handwerker(in)?|schreiner(in)?|bauarbeiter(in)?|zimmermann)$/, 'handwerker']];
+const WISH = /(^!|\b(werden|sein|bin|will|möchte|moechte|wäre|waere|darf|job|beruf|als|gerne|bitte)\b)/;
+const jobLabel = p => p.job ? (p.jl || JOBS[p.job].n) : null;
+
 /* Kamera-Fokus auf ein Haus */
 const FOC = { p:null, until:0, q:[] };
 function focus(p, ms){
@@ -268,10 +377,11 @@ function updFocus(t){ if (FOC.p && t > FOC.until) { const n = FOC.q.shift(); if 
 const COLORS = ['#e5484d','#f76b15','#ffc53d','#46a758','#0090ff','#8e4ec6','#d6409f','#12a594','#ab6400','#3e63dd'];
 const hash = s => { let h = 2166136261; for (const c of String(s)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
 
-/* ---------- Zeltplätze (Ringe um das Lagerfeuer) ---------- */
+/* ---------- Zeltplätze (Ringe um den Dorfplatz) ---------- */
 const pos = []; let pr;
+const R0 = 240;
 const capOf = R => Math.floor(2*Math.PI*R/34);
-function resetPos(){ pos.length = 0; pr = {R:150, ring:0, slot:0, cap:capOf(150)}; }
+function resetPos(){ pos.length = 0; pr = {R:R0, ring:0, slot:0, cap:capOf(R0)}; }
 function ensurePos(n){
   while (pos.length < n) {
     if (pr.slot >= pr.cap) { pr.ring++; pr.R += 36; pr.cap = capOf(pr.R); pr.slot = 0; }
@@ -281,11 +391,15 @@ function ensurePos(n){
     pos.push({x, y, R:pr.R});
   }
 }
-const maxR = () => S.people.length ? pos[S.people.length-1].R : 110;
-let onRebuild = null, houseDirty = false;
-function rebuild(){ if (onRebuild) onRebuild(); byUser = {}; FOC.p = null; FOC.q = []; S.people.forEach(p => { byUser[p.u] = p; if (p.st === undefined) p.st = stage(p); }); resetPos(); ensurePos(S.people.length); }
+const maxR = () => S.people.length ? pos[S.people.length-1].R : R0 - 40;
+const bandR = b => pos[BANDS[b]-1] ? pos[BANDS[b]-1].R + 18 : 0;
+// Plätze für große Gebäude
+const plazaSlot = i => { const a = Math.PI/8 + i*Math.PI/4, r = 170; return { a, x: Math.cos(a)*r, z: Math.sin(a)*r }; };
+let onRebuild = null, houseDirty = false, crewDirty = true;
+function rebuild(){ if (onRebuild) onRebuild(); byUser = {}; FOC.p = null; FOC.q = []; S.people.forEach(p => { byUser[p.u] = p; if (p.st === undefined) p.st = stage(p); }); resetPos(); ensurePos(S.people.length); crewDirty = true; }
 rebuild();
 const anim = new Map(); // no -> Zeitpunkt des Einzugs
+const lastC = {}, lastJob = {};
 
 /* ---------- Anzeige-Helfer ---------- */
 const annQ = []; let annBusy = false;
@@ -303,6 +417,113 @@ function feed(txt, gold){
   while (f.children.length > 3) f.removeChild(f.firstChild);
   setTimeout(() => { d.classList.add('fade'); setTimeout(() => d.remove(), 500); }, 7000);
 }
+/* Karten (wie im Video: Ausweis, Gesucht, Gebaut ✓ …) */
+const cardQ = []; let cardUntil = 0, cardOn = null;
+function card(c){ if (cardQ.length > 6) cardQ.shift(); cardQ.push(c); }
+function cardHTML(c){
+  const p = c.p;
+  switch (c.type) {
+    case 'msg': return `<div class="fRow"><div class="av" style="background:${COLORS[hash(p.u) % COLORS.length]}">${esc((p.n[0] || '?').toUpperCase())}</div><div class="fMain">
+      <div class="cSub">@${esc(p.n)} ${c.tag ? `<span class="cTag ${c.tagC || 'blue'}">${esc(c.tag)}</span>` : ''}</div><div class="bubble">${esc(c.text)}</div><div class="cSub">gerade eben</div></div></div>`;
+    case 'id': {
+      const j = p.job ? JOBS[p.job] : null, ups = upList(p).map(k => UPG[k].e).join(' ');
+      return `<div class="cHead">BEWOHNERAUSWEIS <span>DIE LETZTE ZUFLUCHT</span></div>
+      <div class="fRow"><div class="av" style="background:${COLORS[hash(p.u) % COLORS.length]}">🙂</div><div class="fMain">
+        <div class="fName">@${esc(p.n)}</div>
+        <div class="idLine"><span>Zelt Nr.</span><b>${fmt(p.no)} · ${esc(district(p.no))}</b>
+        <span>Wohnung</span><b>${STAGES[p.st || 0].e} Stufe ${(p.st || 0) + 1} · ${esc(STAGES[p.st || 0].n)}</b>
+        <span>Aufgabe</span><b>${j ? `${j.e} ${esc(jobLabel(p))}` : '— noch keine'}${S.cmd === p.u ? ' · 🎖️ Kommandant' : ''}</b>
+        ${ups ? `<span>Besitz</span><b>${ups}</b>` : ''}</div></div></div><div class="stripe"></div>`; }
+    case 'wanted': return `<div class="fRow"><div class="cIco">?</div><div class="fMain"><div><span class="cTag red">GESUCHT</span></div>
+      <div class="cBig">🎖️ Kommandant</div><div class="cSub">der Militärbasis · schreib <b>„Ich will Kommandant werden“</b></div></div></div>`;
+    case 'built': return `<div class="fRow"><div class="cIco gold">${c.e}</div><div class="fMain"><div class="cBig">${esc(c.l)}</div><div class="cSub">${esc(c.sub)}</div></div><div class="ok">gebaut ✓</div></div>`;
+    case 'cmd': return `<div class="fRow"><div class="cIco gold">🎖️</div><div class="fMain"><div><span class="cTag green">NEUER KOMMANDANT</span></div>
+      <div class="cBig">@${esc(p.n)}</div><div class="cSub">führt ab jetzt die Militärbasis · ${fmt(c.n)} ${c.n === 1 ? 'Bewerbung' : 'Bewerbungen'}</div></div></div>`;
+    case 'story': return `<div class="fRow"><div class="cIco">${c.e}</div><div class="fMain"><div><span class="cTag ${c.tagC || ''}">${esc(c.tag)}</span></div>
+      <div class="cBig">${p ? '@' + esc(p.n) : esc(c.title || '')}</div><div class="cSub">${esc(c.text)}</div></div></div>`;
+  }
+  return '';
+}
+function updCards(t, dt){
+  if (SHOW.cur) { cardUntil += dt; return; }
+  if (cardOn && t < cardUntil) return;
+  const el = $('card');
+  const c = cardQ.shift();
+  if (!c) { if (cardOn) { cardOn = null; el.classList.add('hidden'); } return; }
+  cardOn = c; cardUntil = t + (c.ms || 5500);
+  el.innerHTML = cardHTML(c); el.classList.remove('hidden');
+  el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
+  if (c.p && c.type !== 'msg') focus(c.p, c.ms || 5500);
+}
+
+/* ---------- Stimme (Sprachausgabe des Geräts, Deutsch) ---------- */
+const OPT_KEY = 'zuflucht-optionen';
+const OPT = Object.assign({ voice:true, show:true }, (() => { try { return JSON.parse(localStorage.getItem(OPT_KEY)) || {}; } catch (e) { return {}; } })());
+const saveOpt = () => { try { localStorage.setItem(OPT_KEY, JSON.stringify(OPT)); } catch (e) {} };
+const SS = window.speechSynthesis || null;
+let deVoice = null;
+function pickVoice(){ if (!SS) return; const vs = SS.getVoices();
+  deVoice = vs.find(v => /^de[-_]DE/i.test(v.lang) && /anna|petra|helena|markus|yannick|google/i.test(v.name)) || vs.find(v => /^de[-_]DE/i.test(v.lang)) || vs.find(v => /^de/i.test(v.lang)) || null; }
+if (SS) { pickVoice(); try { SS.addEventListener('voiceschanged', pickVoice); } catch (e) { SS.onvoiceschanged = pickVoice; } }
+const sayQ = []; let speaking = false, speakT = 0;
+function cleanName(n){
+  return String(n || '').replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '').replace(/[_.\-|]+/g, ' ').replace(/\d+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 22) || 'Überlebender';
+}
+function say(text, prio = 1){
+  if (!OPT.voice || !SS || !text) return;
+  if (sayQ.length >= 4) { let i = -1, lo = prio; sayQ.forEach((x, j) => { if (x.prio < lo) { lo = x.prio; i = j; } }); if (i < 0) return; sayQ.splice(i, 1); }
+  sayQ.push({ text, prio }); nextSay();
+}
+function nextSay(){
+  if (!SS) return;
+  if (speaking && now() - speakT > 12000) speaking = false; // falls das Gerät hängt
+  if (speaking) return;
+  const it = sayQ.shift(); if (!it) return;
+  const u = new SpeechSynthesisUtterance(it.text);
+  if (deVoice) u.voice = deVoice; u.lang = deVoice ? deVoice.lang : 'de-DE'; u.rate = 1.03; u.pitch = 1;
+  speaking = true; speakT = now();
+  const done = () => { if (!speaking) return; speaking = false; setTimeout(nextSay, 250); };
+  u.onend = done; u.onerror = done;
+  try { SS.speak(u); } catch (e) { done(); }
+}
+setInterval(nextSay, 1500);
+// iPad/iPhone: Ton erst nach dem ersten Tippen erlaubt
+let unlocked = false;
+addEventListener('pointerdown', () => { if (unlocked || !SS) return; unlocked = true; try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; SS.speak(u); } catch (e) {} }, { capture: true });
+// Danke fürs Folgen – mehrere Follower werden zusammengefasst
+let followBuf = [], followT = null;
+function thankFollow(p){
+  followBuf.push(cleanName(p.n));
+  if (followT) return;
+  followT = setTimeout(() => {
+    const b = followBuf; followBuf = []; followT = null;
+    let t;
+    if (b.length === 1) t = pick([`Danke fürs Folgen, ${b[0]}! Willkommen in der letzten Zuflucht.`, `${b[0]} ist eingezogen. Schön, dass du da bist!`, `Willkommen im Camp, ${b[0]}! Dein Zelt steht schon.`, `Danke, ${b[0]}! Ab jetzt überlebst du mit uns.`]);
+    else if (b.length <= 3) t = `Danke fürs Folgen, ${b.slice(0, -1).join(', ')} und ${b[b.length - 1]}!`;
+    else t = `Danke an ${b[0]}, ${b[1]} und ${b.length - 2} weitere fürs Folgen!`;
+    say(t, 1);
+  }, 2500);
+}
+
+/* ---------- Nahaufnahme: Kamera fliegt zum Haus, großer Text ---------- */
+const SHOW = { cur:null, until:0, q:[] };
+function showcase(p, big, small, voice, prio = 2, ms = 5500){
+  if (!p) return;
+  if (voice) say(voice, prio);
+  if (!OPT.show) { focus(p, ms); return; }
+  if (SHOW.cur && SHOW.cur.p === p) { Object.assign(SHOW.cur, { big, small }); SHOW.until = Math.max(SHOW.until, now() + ms * .8); renderShow(); return; }
+  const ex = SHOW.q.find(x => x.p === p);
+  if (ex) { Object.assign(ex, { big, small, ms: Math.max(ex.ms, ms), prio: Math.max(ex.prio, prio) }); return; }
+  if (SHOW.q.length >= 4) { let i = -1, lo = prio; SHOW.q.forEach((x, j) => { if (x.prio < lo) { lo = x.prio; i = j; } }); if (i < 0) return; SHOW.q.splice(i, 1); }
+  SHOW.q.push({ p, big, small, ms, prio });
+}
+function renderShow(){ const s = SHOW.cur; if (!s) return; $('show').innerHTML = `<div class="pop"><div class="big">${esc(s.big)}</div>${s.small ? `<div class="small">${esc(s.small)}</div>` : ''}</div>`; }
+function updShow(t){
+  if (SHOW.cur && t < SHOW.until) return;
+  const n = SHOW.q.shift();
+  if (!n) { if (SHOW.cur) { SHOW.cur = null; document.body.classList.remove('showing'); const el = $('show'); el.firstChild && el.firstChild.classList.add('out'); setTimeout(() => { if (!SHOW.cur) el.innerHTML = ''; }, 350); } return; }
+  SHOW.cur = n; SHOW.until = t + n.ms; document.body.classList.add('showing'); renderShow();
+}
 
 /* ---------- Spiel-Logik ---------- */
 function addPerson(u, name){
@@ -312,7 +533,7 @@ function addPerson(u, name){
   S.people.push(p); byUser[u] = p; ensurePos(S.people.length);
   anim.set(p.no, now());
   S.res += 1; dirty = true;
-  feed(`⛺ ${p.n} ist eingezogen · Zelt #${p.no}`);
+  feed(`⛺ ${p.n} ist eingezogen · Zelt #${p.no} · ${district(p.no)}`);
   checkGoal();
   return p;
 }
@@ -328,11 +549,15 @@ function checkGoal(){
 function addPts(p){
   const st = stage(p); if (p.st === undefined) p.st = 0;
   if (st > p.st) {
+    const first = p.st === 0;
     p.st = st; p.lu = now(); houseDirty = true;
     const s = STAGES[st];
     feed(`${s.e} ${p.n}: Stufe ${st+1} · ${s.n}!`, true);
-    if (st >= 7) announce(`${s.e} ${p.n.toUpperCase()}`, `Stufe ${st+1} · ${s.n}!`);
-    focus(p, 8000);
+    if (first) feed(`🛖 ${p.n}: jetzt gehen Extras – z. B. !hund oder !garten`);
+    const nm = cleanName(p.n);
+    showcase(p, first ? '🛖 RAUS AUS DEM ZELT!' : `${s.e} HAUS AUSGEBAUT!`, `@${p.n} · Stufe ${st+1} · ${s.n}`,
+      first ? `${nm} zieht aus dem Zelt aus. Neu: ${s.n}!` : pick([`${nm} hat das Haus ausgebaut! Neu: ${s.n}.`, `Glückwunsch, ${nm}! Dein neues Zuhause: ${s.n}.`, `Stark, ${nm}! Ab jetzt: ${s.n}.`]),
+      st >= 7 ? 3 : 2, 6500);
   }
   dirty = true;
 }
@@ -340,7 +565,11 @@ function gift(u, name, d){
   const p = addPerson(u, name); if (!p) return;
   p.g = (p.g || 0) + d; S.res += d * 2;
   feed(`🎁 ${p.n} schickt ${fmt(d)} 💎 · +${fmt(d)} Baupunkte`, true);
-  focus(p, 6000); addPts(p);
+  const st0 = p.st || 0, nm = cleanName(p.n);
+  addPts(p);
+  if ((p.st || 0) > st0) say(`Danke für das Geschenk, ${nm}!`, d >= 10 ? 2 : 0);
+  else if (d >= 5) showcase(p, '🎁 DANKE!', `@${p.n} schickt ${fmt(d)} 💎`, `Danke für ${fmt(d)} Münzen, ${nm}!`, d >= 30 ? 3 : 2, 4500);
+  else { focus(p, 4000); say(pick([`Danke, ${nm}!`, `Danke für das Geschenk, ${nm}!`]), 0); }
 }
 function like(u, name, n){
   S.likes += n; S.likeBank += n;
@@ -348,15 +577,48 @@ function like(u, name, n){
   if (u) { const p = byUser[u] || addPerson(u, name); if (p) { p.l = (p.l || 0) + n; addPts(p); } }
   dirty = true;
 }
+function comment(p){
+  const t = now();
+  if (lastC[p.u] && t - lastC[p.u] < COMMENT_COOLDOWN) return;
+  lastC[p.u] = t; p.k = (p.k || 0) + 1;
+  if (++S.cBank >= 5) { S.cBank = 0; S.res++; }
+  addPts(p);
+}
 
 /* Abstimmung */
-let V = { active:false }, nextVoteAt = now() + 4000;
+let V = { active:false }, nextVoteAt = now() + 4000, retryTpl = null;
+const item = k => BIG[k] ? Object.assign({ big:k }, BIG[k]) : Object.assign({ b:k }, SMALL[k]);
+function makeVote(){
+  if (retryTpl) { const t = retryTpl; retryTpl = null; return t; }
+  const n = S.voteN;
+  // Mauer um ein volles Viertel?
+  const wb = S.walls.length;
+  if (wb < BANDS.length && S.people.length >= BANDS[wb]) return { q:`Mauer um den ${bandName(wb)}?`, o:[
+    {l:'Mauer bauen', e:'🧱', d:`schützt ${fmt(BANDS[wb])} Zelte`, c:25 + wb*20, ring:wb, fx:{vert:15}},
+    {l:'Fallgruben davor', e:'🕳️', d:'Spieße gegen die Horde', c:10, trap:true, fx:{vert:8}},
+    {l:'Erst Vorräte sammeln', e:'🥫', fx:{essen:12, wasser:8}} ]};
+  const free = shuffle([...Object.keys(BIG).filter(k => !S.plaza.includes(k)), ...Object.keys(SMALL).filter(k => !S.built.includes(k))]);
+  const bigFree = free.filter(k => BIG[k]);
+  if (n % 3 === 0 && free.length >= 3) {
+    const ks = (bigFree.length >= 2 ? [...bigFree.slice(0, 2), free.find(k => !bigFree.slice(0, 2).includes(k))] : free.slice(0, 3)).filter(Boolean);
+    if (ks.length === 3) return { q:'Was bauen wir?', o: ks.map(item) };
+  }
+  if (n % 3 === 2 && S.wallLv < WALLS.length - 1) {
+    const nx = WALLS[S.wallLv + 1];
+    return { q:'Wie verstärken wir die Außenmauer?', o:[
+      {l:nx.n, e:nx.e, d:`statt ${WALLS[S.wallLv].n}`, c:nx.c, wallUp:true, fx:nx.fx},
+      S.built.includes('fallen') ? {l:'Scheinwerfer', e:'🔦', d:'nachts mehr sehen', fx:{vert:8, moral:4}} : {l:'Fallgruben', e:'🕳️', d:'Spieße vor der Mauer', c:10, trap:true, fx:{vert:8}},
+      {l:'Nachtwache verdoppeln', e:'👀', fx:{vert:6, moral:-3}} ]};
+  }
+  return EVENTS[Math.floor(n / 3) % EVENTS.length];
+}
 function startVote(){
-  const tpl = VOTES[S.voteN % VOTES.length]; S.voteN++; dirty = true;
-  V = { active:true, tpl, votes:{}, counts:[0,0,0], start:now(), ends:now() + T().vote };
+  const tpl = makeVote(); S.voteN++; dirty = true;
+  V = { active:true, tpl, no:S.voteN, votes:{}, counts:[0,0,0], start:now(), ends:now() + T().vote };
+  $('vHead').textContent = `🗳️ ABSTIMMUNG #${V.no}`;
   $('vQ').textContent = tpl.q;
   $('vOpts').innerHTML = tpl.o.map((o,i) =>
-    `<div class="opt" id="o${i}"><div class="fill"></div><div class="letter">${'ABC'[i]}</div><div>${o.e} ${esc(o.l)}${o.c ? `<small>${o.c} 🧱</small>` : ''}</div><div class="pct" id="p${i}">0%</div></div>`).join('');
+    `<div class="opt" id="o${i}"><div class="fill"></div><div class="letter">${'ABC'[i]}</div><div>${o.e} ${esc(o.l)}${o.c ? `<small>${o.c} 🧱</small>` : ''}${o.d ? `<span class="d">${esc(o.d)}</span>` : ''}</div><div class="pct" id="p${i}">0%</div></div>`).join('');
   renderVote();
 }
 function renderVote(){
@@ -377,44 +639,111 @@ function castVote(u, idx){
 }
 function endVote(){
   V.active = false;
-  const max = Math.max(...V.counts);
+  const max = Math.max(...V.counts), tot = V.counts.reduce((a,b) => a+b, 0);
   let win = max === 0 ? Math.floor(Math.random()*3) : V.counts.indexOf(max);
   const o = V.tpl.o[win];
   const el = $('o'+win); el && el.classList.add('win');
+  const sub = `Abstimmung #${V.no} · ${'ABC'[win]} gewinnt`;
   if (o.c && S.res < o.c) {
     announce(`${o.e} ${o.l.toUpperCase()}`, `Zu wenig Rohstoffe – noch ${o.c - S.res} 🧱 nötig!`);
-    feed(`🧱 Für „${o.l}“ fehlen ${o.c - S.res} Rohstoffe – folgt & liked!`);
-    S.voteN--; // gleiche Frage kommt nochmal
+    feed(`🧱 Für „${o.l}“ fehlen ${o.c - S.res} Rohstoffe – folgt, kommentiert & liked!`);
+    retryTpl = V.tpl; // gleiche Frage kommt nochmal
   } else {
     if (o.c) S.res -= o.c;
-    for (const k in o.fx) S.stats[k] = clamp(S.stats[k] + o.fx[k], 0, 100);
-    if (o.b && !S.built.includes(o.b)) S.built.push(o.b);
-    announce(`${o.e} ${o.l.toUpperCase()}`, max === 0 ? 'Keine Stimmen – der Anführer entscheidet' : `${'ABC'[win]} gewinnt mit ${Math.round(max / V.counts.reduce((a,b)=>a+b,0) * 100)}%`);
+    for (const k in o.fx || {}) { if (k === 'res') S.res += o.fx[k]; else S.stats[k] = clamp(S.stats[k] + o.fx[k], 0, 100); }
+    let built = false;
+    if (o.b && !S.built.includes(o.b)) { S.built.push(o.b); built = true; }
+    if (o.big && !S.plaza.includes(o.big)) { S.plaza.push(o.big); built = true; crewDirty = true; }
+    if (o.trap && !S.built.includes('fallen')) { S.built.push('fallen'); built = true; }
+    if (o.wallUp && S.wallLv < WALLS.length - 1) { S.wallLv++; built = true; }
+    if (o.ring !== undefined && !S.walls.includes(o.ring)) { S.walls.push(o.ring); built = true; }
+    announce(`${o.e} ${o.l.toUpperCase()}`, max === 0 ? 'Keine Stimmen – der Anführer entscheidet' : `${'ABC'[win]} gewinnt mit ${Math.round(max / tot * 100)}%`);
+    say(max === 0 ? `Keine Stimmen. Der Anführer entscheidet: ${o.l}.` : `Abstimmung vorbei. ${'ABC'[win]} gewinnt: ${o.l}${built ? '. Wird sofort gebaut!' : '!'}`, 2);
+    if (built) card({ type:'built', e:o.e, l:o.ring !== undefined ? `Mauer um den ${bandName(o.ring)}` : o.l, sub, ms:6000 });
+    if (o.big === 'militaer' && !S.cmd) { cmdT = 0; card({ type:'wanted', ms:7000 }); }
+    if (o.big && JOBS && Object.values(JOBS).some(j => j.at === o.big)) {
+      const j = Object.values(JOBS).find(j => j.at === o.big);
+      feed(`${j.e} Gesucht: ${j.n}! Schreib „Ich will ${j.n} werden“`, true);
+    }
   }
   dirty = true;
   nextVoteAt = now() + T().pause;
 }
+
+/* Kommandant */
+let cmdT = 0, wantedT = 0;
+function chooseCmd(force){
+  const apps = Object.keys(S.cmdApp).map(u => byUser[u]).filter(Boolean);
+  if (!apps.length) { if (force) feed('🎖️ Noch keine Bewerbung – schreibt „Ich will Kommandant werden“'); return; }
+  apps.sort((a, b) => pts(b) - pts(a) || Math.random() - .5);
+  const p = apps[0];
+  S.cmd = p.u; if (!p.job || JOBS[p.job].at !== 'militaer') { p.job = 'soldat'; p.jl = 'Soldat'; }
+  dirty = true; crewDirty = true;
+  announce(`🎖️ ${p.n.toUpperCase()}`, 'ist neuer Kommandant der Militärbasis!');
+  say(`Achtung! ${cleanName(p.n)} ist der neue Kommandant der Militärbasis!`, 3);
+  card({ type:'cmd', p, n: apps.length, ms:7000 });
+  S.cmdApp = {};
+}
+
+/* Kommentare */
+function setJob(p, key, word, raw){
+  const t = now();
+  if (lastJob[p.u] && t - lastJob[p.u] < 60e3) return;
+  lastJob[p.u] = t;
+  const j = JOBS[key];
+  p.job = key; p.jl = word ? word[0].toUpperCase() + word.slice(1) : j.n; dirty = true; crewDirty = true;
+  card({ type:'msg', p, text: raw.slice(0, 70), tag:'BERUFSWUNSCH', ms:3200 });
+  card({ type:'id', p, ms:6000 });
+  const home = j.at && j.at !== 'gate' ? BIG[j.at] : null;
+  if (home && !S.plaza.includes(j.at)) feed(`${j.e} ${p.n} wird ${p.jl} – jetzt fehlt noch: ${home.e} ${home.l}!`);
+  else feed(`${j.e} ${p.n} arbeitet jetzt als ${p.jl}`);
+  say(`${cleanName(p.n)} ist ab jetzt ${p.jl}!`, 1);
+}
 function chat(u, name, text){
-  const raw = String(text || '').trim();
+  const raw = String(text || '').trim(); if (!raw) return;
   const m = raw.toUpperCase().match(/^([ABC])[\s!.]*$/);
-  if (m) { castVote(u || name, 'ABC'.indexOf(m[1])); return; }
-  const low = raw.toLowerCase(), p = byUser[u || name];
+  const id = u || name;
+  const p = byUser[id] || addPerson(id, name);
   if (!p) return;
+  comment(p);
+  if (m) { castVote(id, 'ABC'.indexOf(m[1])); return; }
+  const low = raw.toLowerCase().trim();
   if (/^!?(haus|house)\b/.test(low)) { focus(p, 7000); return; }
-  const fm = low.match(/^!farbe\s+(\S+)/);
+  if (/^!?(ausweis|id|pass)\b/.test(low)) { card({ type:'id', p, ms:6000 }); return; }
+  const fm = low.match(/^!?farbe\s+(\S+)/);
   if (fm) {
-    if (p.st < 2) { feed(`🎨 ${p.n}: Farben gibt’s ab Stufe 3`); return; }
-    if (FARBEN[fm[1]]) { p.c = fm[1]; houseDirty = true; dirty = true; feed(`🎨 ${p.n} streicht sein Haus ${fm[1]}!`); focus(p, 6000); }
+    if (p.st < 1) { feed(`🎨 ${p.n}: Farben gibt’s ab Stufe 2 – kommentier weiter!`); return; }
+    if (FARBEN[fm[1]]) { p.c = fm[1]; houseDirty = true; dirty = true; feed(`🎨 ${p.n} streicht sein Haus ${fm[1]}!`);
+      showcase(p, '🎨 NEUE FARBE!', `@${p.n} streicht sein Haus ${fm[1]}`, `${cleanName(p.n)} streicht das Haus ${fm[1]} an!`, 2, 5000); }
     return;
   }
-  if (low === '!hund' || low === '!katze') {
-    if (p.st < 2) { feed(`🐾 ${p.n}: Haustiere gibt’s ab Stufe 3`); return; }
-    p.pet = low.slice(1); houseDirty = true; dirty = true;
-    feed(low === '!hund' ? `🐶 ${p.n} hat jetzt einen Hund!` : `🐱 ${p.n} hat jetzt eine Katze!`); focus(p, 6000); return;
+  // Extras: !auto, !hund, !garten …
+  const um = low.match(/^!?([a-zäöü]+)[\s!.]*$/);
+  const uk = um && (UPG[um[1]] ? um[1] : UPG_ALIAS[um[1]]);
+  if (uk) {
+    const U = UPG[uk];
+    if ((p.st || 0) < U.min) { feed(`${U.e} ${p.n}: ${U.n} gibt’s ab Stufe ${U.min + 1} · ${STAGES[U.min].n}`); return; }
+    if (uk === 'drache') p.drache = true;
+    else if (U.pet) p.pet = uk;
+    else { p.up = p.up || {}; p.up[uk] = 1; }
+    houseDirty = true; dirty = true;
+    feed(`${U.e} ${p.n} ${U.msg}!`, uk === 'drache' || uk === 'wachturm');
+    showcase(p, `${U.e} ${U.n.toUpperCase()}!`, `@${p.n} ${U.msg}`, `${cleanName(p.n)} ${U.say}`, uk === 'drache' ? 3 : 2, uk === 'drache' ? 8000 : 5500); return;
   }
-  if (low === '!drache') {
-    if (p.st < 14) { feed(`🐉 ${p.n}: Drachen gibt’s erst ab Stufe 15`); return; }
-    p.drache = true; houseDirty = true; dirty = true; feed(`🐉 ${p.n} ruft seinen Drachen!`, true); focus(p, 9000); return;
+  // Kommandant-Bewerbung
+  if (/kommandant|commander|anführer|anfuehrer|general\b/.test(low)) {
+    if (S.cmd === p.u) return;
+    if (!S.cmdApp[p.u]) { S.cmdApp[p.u] = 1; dirty = true; feed(`🎖️ ${p.n} bewirbt sich als Kommandant (${Object.keys(S.cmdApp).length})`); }
+    if (!S.plaza.includes('militaer')) feed('🪖 Erst braucht ihr eine Militärbasis – stimmt dafür ab!');
+    return;
+  }
+  // Berufswunsch („Darf ich Medizinerin werden?“)
+  if (WISH.test(low)) {
+    for (const w of low.split(/[^a-zäöüß]+/)) {
+      if (!w) continue;
+      const hit = JOBWORDS.find(([re]) => re.test(w));
+      if (hit) { if (p.job !== hit[1]) setJob(p, hit[1], w, raw); return; }
+    }
   }
 }
 
@@ -422,10 +751,12 @@ function chat(u, name, text){
 const zombies = []; let zHits = 0, zSpawn = 0, nightK = S.night ? 1 : 0;
 function startNight(){
   S.night = true; S.phaseT = 0; zHits = 0; dirty = true;
-  const pool = S.people.slice(); S.watch = [];
+  const guards = S.people.filter(p => p.job === 'wache' || p.job === 'soldat' || p.job === 'sniper');
+  const pool = (guards.length >= 4 ? guards : S.people).slice(); S.watch = [];
   for (let i = 0; i < 4 && pool.length; i++) S.watch.push(pool.splice(Math.floor(Math.random()*pool.length), 1)[0].n);
   renderWatch();
   announce(`🌙 NACHT ${S.day}`, 'Die Horde kommt näher…');
+  say(pick(['Die Nacht bricht herein. Die Horde kommt näher.', 'Es wird dunkel. Alle an die Mauer!', 'Nacht im Camp. Die Wache übernimmt.']), 3);
 }
 function endNight(){
   S.night = false; S.phaseT = 0; S.day++; dirty = true;
@@ -433,10 +764,12 @@ function endNight(){
   if (zHits > 0 && S.stats.vert < 40) {
     const dmg = Math.min(15, zHits);
     S.stats.moral = clamp(S.stats.moral - dmg, 0, 100);
-    announce(`☀️ TAG ${S.day}`, `Die Zombies haben den Zaun beschädigt! (−${dmg} Moral)`);
+    announce(`☀️ TAG ${S.day}`, `Die Zombies haben die Mauer beschädigt! (−${dmg} Moral)`);
+    say(`Tag ${S.day}. Die Zombies haben die Mauer beschädigt!`, 3);
   } else {
-    announce(`☀️ TAG ${S.day}`, 'Die Nachtwache hat gehalten!');
+    announce(`☀️ TAG ${S.day}`, S.built.includes('fallen') ? 'Kein Durchkommen – die Fallgruben halten!' : 'Die Nachtwache hat gehalten!');
     if (S.watch.length) feed(`🔦 Danke an die Wache: ${S.watch.join(', ')}`, true);
+    say(`Tag ${S.day}. Wir haben die Nacht überlebt!`, 3);
   }
   S.watch = []; renderWatch();
 }
@@ -448,17 +781,30 @@ function renderWatch(){
 }
 renderWatch();
 
+/* Kleine Geschichten zwischendurch */
+function story(){
+  const ppl = S.people; if (!ppl.length) return;
+  const p = pick(ppl), r = Math.random();
+  if (r < .3) { S.res += 5; card({ type:'story', p, e:'🏃', tag:'GERADE SO ENTKOMMEN', tagC:'', text:'kommt von der Expedition zurück · +5 🧱' }); }
+  else if (r < .5) { S.stats.essen = clamp(S.stats.essen + 6, 0, 100); card({ type:'story', p, e:'📦', tag:'FUND', tagC:'green', text:'hat Konserven gefunden · +6 Essen' }); }
+  else if (r < .7) { S.stats.moral = clamp(S.stats.moral + 5, 0, 100); card({ type:'story', p, e:'🎸', tag:'LAGERFEUER', tagC:'blue', text:'spielt Gitarre am Feuer · +5 Moral' }); }
+  else if (r < .85) { card({ type:'story', p:null, title:'Funkspruch empfangen', e:'📻', tag:'RÄTSEL', tagC:'red', text:'„…die Stadt im Norden… nicht verwechseln…“ – was heißt das?' }); }
+  else { card({ type:'id', p, ms:6000 }); }
+  dirty = true;
+}
+
 /* Zeiten: echte Live-Werte vs. Zeitraffer im Demo */
 const T = () => demo
-  ? { day:70e3, night:35e3, vote:25e3, pause:6e3, decay:8e3 }
-  : { day:6*60e3, night:2*60e3, vote:90e3, pause:20e3, decay:45e3 };
+  ? { day:70e3, night:35e3, vote:25e3, pause:6e3, decay:8e3, story:22e3, cmd:30e3, wanted:40e3 }
+  : { day:6*60e3, night:2*60e3, vote:90e3, pause:20e3, decay:45e3, story:150e3, cmd:3*60e3, wanted:100e3 };
 
 /* ---------- Ereignisse von außen (Live-Server / Demo) ---------- */
 function campEvent(e){
   if (!e || !e.type) return;
   const u = e.user || e.uniqueId, n = e.name || e.nickname || u;
   switch (e.type) {
-    case 'follow': addPerson(u, n); break;
+    case 'follow': { const isNew = !byUser[String(u || n || '').trim()], p = addPerson(u, n);
+      if (p && isNew) { thankFollow(p); showcase(p, '⛺ WILLKOMMEN!', `@${p.n} · Zelt #${p.no} · ${district(p.no)}`, null, 1, 4200); } break; }
     case 'chat': chat(u, n, e.text || e.comment); break;
     case 'gift': gift(u, n, Math.max(1, +e.diamonds || 1)); break;
     case 'like': like(u, n, Math.max(1, +e.count || 1)); break;
@@ -484,35 +830,41 @@ connectLive();
 const FN = ['Lena','Max','Mia','Luca','Noah','Lea','Elias','Emma','Leon','Nina','Finn','Sara','Jonas','Lara','Tim','Alina','Ben','Julia','Nico','Laura','Marco','Giulia','Sven','Anja','Jan','Selin','Deniz','Aylin','Kevin','Chiara'];
 const SUF = ['','_','.ch','99','_official','2008','x','.zh','_be','123','.lu','_ttv'];
 const fake = () => { const f = pick(FN); return { u: (f + pick(SUF) + Math.floor(rnd(0,99))).toLowerCase(), n: f }; };
+const DEMO_TALK = ['Darf ich Medizinerin werden?','ich würde gerne ein soldat sein','Kann ich bitte Scharfschütze beim Militär sein','ich will Koch werden','darf ich Polizist sein?','Ich wär der Haupt Kommandant','ich will kommandant werden','bin gerne Mechaniker','ich möchte Bauer werden','!auto','!hund','!katze','!garten','!zaun','!motorrad','!solar','!flagge','!wachturm','!farbe rot','!farbe blau','!farbe gold','ausweis','haus','!drache','lol','das camp ist so cool','wann kommt die nacht?','🔥🔥🔥','hallo aus Zürich'];
 let demoTimer = null;
 function setDemo(on){
   if (on === demo) return;
   demo = on;
   if (on) { S = fresh(); }
-  else { S = store.get() || fresh(); }
-  anim.clear(); zombies.length = 0; nightK = S.night ? 1 : 0; FOC.p = null; FOC.q = [];
+  else { S = load() || fresh(); }
+  anim.clear(); zombies.length = 0; nightK = S.night ? 1 : 0; FOC.p = null; FOC.q = []; cardQ.length = 0; retryTpl = null;
   rebuild(); renderWatch(); V = { active:false }; nextVoteAt = now() + 2500;
   $('vQ').textContent = 'Gleich geht’s los …'; $('vOpts').innerHTML = ''; $('vCount').textContent = '';
   $('demoBadge').classList.toggle('hidden', !demo);
   clearInterval(demoTimer);
-  if (demo) demoTimer = setInterval(() => {
-    if (Math.random() < .16) { const f = fake(); campEvent({type:'follow', user:f.u, name:f.n}); }
-    if (V.active && Math.random() < .6) {
-      const p = S.people.length && Math.random() < .8 ? pick(S.people) : fake();
-      const r = Math.random(); campEvent({type:'chat', user:p.u, name:p.n, text: r < .45 ? 'A' : r < .75 ? 'B' : 'C'});
-    }
-    if (Math.random() < .35) { const p = S.people.length ? pick(S.people) : null; campEvent({type:'like', user: p && p.u, name: p && p.n, count: Math.floor(rnd(1,15))}); }
-    if (Math.random() < .03 && S.people.length) { const p = pick(S.people); campEvent({type:'chat', user:p.u, name:p.n, text: pick(['haus','!farbe ' + pick(['rot','blau','gold','lila','grün','pink']),'!hund','!katze','!drache'])}); }
-    if (Math.random() < .03 && S.people.length) { const p = pick(S.people); campEvent({type:'gift', user:p.u, name:p.n, diamonds: pick([1,1,1,5,10,10,30,99,199,500])}); }
-  }, 250);
+  if (demo) {
+    S.res = 120; // im Demo darf direkt gebaut werden
+    demoTimer = setInterval(() => {
+      if (Math.random() < .16) { const f = fake(); campEvent({type:'follow', user:f.u, name:f.n}); }
+      if (V.active && Math.random() < .6) {
+        const p = S.people.length && Math.random() < .8 ? pick(S.people) : fake();
+        const r = Math.random(); campEvent({type:'chat', user:p.u, name:p.n, text: r < .45 ? 'A' : r < .75 ? 'B' : 'C'});
+      }
+      if (Math.random() < .35) { const p = S.people.length ? pick(S.people) : null; campEvent({type:'like', user: p && p.u, name: p && p.n, count: Math.floor(rnd(1,15))}); }
+      if (Math.random() < .05 && S.people.length) { const p = pick(S.people); campEvent({type:'chat', user:p.u, name:p.n, text: pick(DEMO_TALK)}); }
+      if (Math.random() < .03 && S.people.length) { const p = pick(S.people); campEvent({type:'gift', user:p.u, name:p.n, diamonds: pick([1,1,1,5,10,10,30,99,199,500])}); }
+    }, 250);
+  }
   updStatus();
 }
 
 /* ---------- Steuerung ---------- */
 function updStatus(){
+  $('voiceBtn').textContent = OPT.voice ? '🔊 Stimme: an' : '🔇 Stimme: aus';
+  $('showBtn').textContent = OPT.show ? '🎬 Nahaufnahme: an' : '🎬 Nahaufnahme: aus';
   $('status').innerHTML = demo
     ? '<b>DEMO-Modus</b>: Testdaten im Zeitraffer, wird nicht gespeichert.'
-    : LIVE ? `<b>Karte ↔ Server:</b> ${wsState}<br><b>TikTok:</b> ${esc(srv ? srv.state : '…')}${srv && srv.lastError ? `<br><small style="opacity:.6">${esc(srv.lastError)}</small>` : ''}${srv ? `<br><b>Ereignisse:</b> ${fmt(srv.events)}` : ''}` : '<b>Live-Verbindung:</b> noch nicht eingerichtet (kommt in Schritt 2). Echte Daten werden auf diesem Gerät gespeichert.';
+    : LIVE ? `<b>Karte ↔ Server:</b> ${wsState}<br><b>TikTok:</b> ${esc(srv ? srv.state : '…')}${srv && srv.lastError ? `<br><small style="opacity:.6">${esc(srv.lastError)}</small>` : ''}${srv ? `<br><b>Ereignisse:</b> ${fmt(srv.events)}` : ''}` : '<b>Live-Verbindung:</b> noch nicht eingerichtet. Echte Daten werden auf diesem Gerät gespeichert.';
 }
 $('gear').onclick = () => { updStatus(); $('panel').classList.toggle('hidden'); };
 let resetArm = 0;
@@ -524,6 +876,11 @@ $('panel').addEventListener('click', ev => {
   if (a === 'night') S.night ? endNight() : startNight();
   if (a === 'f1') { const f = fake(); campEvent({type:'follow', user:f.u, name:f.n}); }
   if (a === 'gift') { if (!S.people.length) { const f = fake(); addPerson(f.u, f.n); } const p = pick(S.people); gift(p.u, p.n, pick([1,10,99,500])); }
+  if (a === 'cmd') chooseCmd(true);
+  if (a === 'story') story();
+  if (a === 'voice') { OPT.voice = !OPT.voice; saveOpt(); if (!OPT.voice && SS) { sayQ.length = 0; try { SS.cancel(); } catch (e) {} speaking = false; } }
+  if (a === 'showc') { OPT.show = !OPT.show; saveOpt(); }
+  if (a === 'vtest') { const was = OPT.voice; OPT.voice = true; say('Hallo! Hier ist die Stimme der letzten Zuflucht. Danke fürs Folgen!', 9); OPT.voice = was; }
   if (a === 'recon') fetch('/api/reconnect').catch(() => {});
   if (a === 'fs') { const d = document.documentElement; try { (d.requestFullscreen || d.webkitRequestFullscreen).call(d); } catch (e) {} }
   if (a === 'addnames') {
@@ -531,7 +888,7 @@ $('panel').addEventListener('click', ev => {
     list.forEach(n => addPerson(n, n)); $('names').value = '';
   }
   if (a === 'reset') {
-    if (now() - resetArm < 3000) { S = fresh(); store.set(S); anim.clear(); rebuild(); renderWatch(); b.textContent = 'Alles zurücksetzen'; resetArm = 0; }
+    if (now() - resetArm < 3000) { S = fresh(); store.set(S); anim.clear(); cardQ.length = 0; rebuild(); renderWatch(); b.textContent = 'Alles zurücksetzen'; resetArm = 0; }
     else { resetArm = now(); b.textContent = 'Wirklich? Nochmal tippen'; setTimeout(() => b.textContent = 'Alles zurücksetzen', 3000); }
   }
   if (a === 'close') $('panel').classList.add('hidden');
@@ -580,17 +937,20 @@ const R3 = (() => {
   const sandSpots = ['#c9ae72','#e6d3a0','#b89b60','#d0b57c','#a8916a'];
   mesh(new THREE.BoxGeometry(30, 1, 14000), PH({ color:'#ffffff', map: noiseTex('#d8c189', sandSpots, 600, 128, 1, 300) }), 0, .5, 0, scene, false).receiveShadow = true;
   mesh(new THREE.BoxGeometry(14000, 1, 30), PH({ color:'#ffffff', map: noiseTex('#d8c189', sandSpots, 600, 128, 300, 1) }), 0, .5, 0, scene, false).receiveShadow = true;
-  const clear = mesh(new THREE.CylinderGeometry(118, 121, 2, 64), PH({ color:'#ffffff', map: noiseTex('#ecd9aa', sandSpots, 900, 256, 5, 5) }), 0, 1, 0, scene, false); clear.receiveShadow = true;
+  // Dorfplatz (größer, damit die großen Gebäude Platz haben)
+  const clear = mesh(new THREE.CylinderGeometry(212, 215, 2, 80), PH({ color:'#ffffff', map: noiseTex('#e4d3a2', sandSpots, 1200, 256, 8, 8) }), 0, 1, 0, scene, false); clear.receiveShadow = true;
+  const inner = mesh(new THREE.CylinderGeometry(118, 121, 2.2, 64), PH({ color:'#ffffff', map: noiseTex('#ecd9aa', sandSpots, 900, 256, 5, 5) }), 0, 1.1, 0, scene, false); inner.receiveShadow = true;
+  { const r = new THREE.Mesh(new THREE.RingGeometry(119, 123, 80), B('#c9ae72')); r.rotation.x = -Math.PI/2; r.position.y = 2.3; scene.add(r); }
   { // Steine am Wegrand
     const g = new THREE.DodecahedronGeometry(1); const im = new THREE.InstancedMesh(g, M('#b8ad94'), 260); const d = new THREE.Object3D();
-    for (let i = 0; i < 260; i++) { const along = rnd(125, 2400) * (Math.random() < .5 ? -1 : 1), side = (Math.random() < .5 ? -1 : 1) * rnd(15, 19), vert = i % 2;
+    for (let i = 0; i < 260; i++) { const along = rnd(220, 2400) * (Math.random() < .5 ? -1 : 1), side = (Math.random() < .5 ? -1 : 1) * rnd(15, 19), vert = i % 2;
       d.position.set(vert ? side : along, .5, vert ? along : side); d.rotation.set(rnd(0,3), rnd(0,3), 0); d.scale.set(rnd(1.5,3.2), rnd(1,2), rnd(1.5,3)); d.updateMatrix(); im.setMatrixAt(i, d.matrix); }
     im.receiveShadow = true; scene.add(im); }
 
   // Grasbüschel
   { const g = new THREE.ConeGeometry(2.2, 6, 4); g.translate(0, 3, 0);
     const im = new THREE.InstancedMesh(g, M('#4f9a45'), 900); const d = new THREE.Object3D(); let k = 0;
-    for (let i = 0; i < 900; i++) { const a = rnd(0, 7), r = 125 + Math.sqrt(Math.random()) * 2600, x = Math.cos(a)*r, z = Math.sin(a)*r;
+    for (let i = 0; i < 900; i++) { const a = rnd(0, 7), r = 220 + Math.sqrt(Math.random()) * 2600, x = Math.cos(a)*r, z = Math.sin(a)*r;
       if (Math.abs(x) < 18 || Math.abs(z) < 18) continue; d.position.set(x, 0, z); d.rotation.y = rnd(0, 3); d.scale.setScalar(rnd(.7, 1.5)); d.updateMatrix(); im.setMatrixAt(k++, d.matrix); }
     im.count = k; scene.add(im); }
 
@@ -604,14 +964,8 @@ const R3 = (() => {
     for (let i = 0; i < 220; i++) { const [x,z] = place(260, 2400); const s = rnd(6, 13); d.position.set(x, s*.5, z); d.rotation.set(0, rnd(0,3), 0); d.scale.set(s, s*.8, s); d.updateMatrix(); bushes.setMatrixAt(i, d.matrix); bushes.setColorAt(i, new THREE.Color(pick(['#3f8f3a','#4b9e42','#357a31','#5aa84b']))); }
     bushes.castShadow = true; scene.add(bushes);
     const fl = new THREE.InstancedMesh(new THREE.SphereGeometry(1.5, 5, 4), new THREE.MeshBasicMaterial({}), 600);
-    for (let i = 0; i < 600; i++) { const [x,z] = place(130, 1800); d.position.set(x, 2, z); d.rotation.set(0,0,0); d.scale.setScalar(rnd(.7, 1.2)); d.updateMatrix(); fl.setMatrixAt(i, d.matrix); fl.setColorAt(i, new THREE.Color(pick(['#ff6b8a','#ffd23f','#ffffff','#b48cff','#ff9f43']))); }
+    for (let i = 0; i < 600; i++) { const [x,z] = place(225, 1800); d.position.set(x, 2, z); d.rotation.set(0,0,0); d.scale.setScalar(rnd(.7, 1.2)); d.updateMatrix(); fl.setMatrixAt(i, d.matrix); fl.setColorAt(i, new THREE.Color(pick(['#ff6b8a','#ffd23f','#ffffff','#b48cff','#ff9f43']))); }
     scene.add(fl);
-  }
-  const clouds = [];
-  for (let i = 0; i < 0; i++) {
-    const g = new THREE.Group(), n = 4 + Math.floor(rnd(0, 4));
-    for (let j = 0; j < n; j++) { const m = mesh(new THREE.IcosahedronGeometry(rnd(28, 46), 1), new THREE.MeshLambertMaterial({ color: '#ffffff', transparent: true, opacity: .92 }), j*34 - n*17, rnd(-8, 8), rnd(-18, 18), g); m.receiveShadow = false; m.scale.y = .6; }
-    g.position.set(rnd(-1600, 1600), rnd(480, 620), rnd(-1600, 1600)); scene.add(g); clouds.push({ g, v: rnd(6, 14) });
   }
   const starGeo = new THREE.BufferGeometry(), sp = [];
   for (let i = 0; i < 900; i++) { const a = rnd(0, Math.PI*2), e = rnd(.12, 1.5); sp.push(Math.cos(a)*Math.cos(e)*6000, Math.sin(e)*6000, Math.sin(a)*Math.cos(e)*6000); }
@@ -655,7 +1009,7 @@ const R3 = (() => {
   mesh(new THREE.CylinderGeometry(1, 1.3, 64, 6), M('#6b4423'), -40, 32, -94);
   const flagGeo = new THREE.PlaneGeometry(24, 15, 10, 4); flagGeo.translate(12, 0, 0);
   const flagBase = flagGeo.attributes.position.array.slice();
-  const flag = mesh(flagGeo, new THREE.MeshPhongMaterial({ color: '#e5484d', side: THREE.DoubleSide, flatShading: true, shininess: 0 }), -40, 56, -94);
+  mesh(flagGeo, new THREE.MeshPhongMaterial({ color: '#e5484d', side: THREE.DoubleSide, flatShading: true, shininess: 0 }), -40, 56, -94);
   mesh(new THREE.CircleGeometry(4, 10), new THREE.MeshBasicMaterial({ color: '#ffd23f', side: THREE.DoubleSide }), -28, 56, -93.6, scene, false);
   // Kistenstapel
   for (const [x,y,z,r] of [[50,5,88,.2],[61,5,86,-.3],[55,15,87,.5],[44,4,98,0]]) { const c = mesh(new THREE.BoxGeometry(10, 10, 10), M('#b07a3e'), x, y, z); c.rotation.y = r; }
@@ -668,7 +1022,41 @@ const R3 = (() => {
   // Holzstapel
   for (let k = 0; k < 5; k++) { const l = mesh(new THREE.CylinderGeometry(3, 3, 26, 6), M('#8b5a2b'), -36, 3 + (k > 2 ? 5 : 0), 84 + (k % 3)*6 - (k > 2 ? -3 : 0), scene); l.rotation.z = Math.PI/2; }
 
-  /* Gebäude */
+  /* Bau-Helfer */
+  const winMat = new THREE.MeshBasicMaterial({ color: '#9fc9e8' });
+  const box = (g, w, h, d, c, x, y, z) => mesh(new THREE.BoxGeometry(w, h, d), typeof c === 'string' ? M(c) : c, x, y, z, g);
+  function gable(g, w, h, d, c, x, y, z){
+    const sh = new THREE.Shape(); sh.moveTo(-w/2, 0); sh.lineTo(w/2, 0); sh.lineTo(0, h); sh.lineTo(-w/2, 0);
+    const geo = new THREE.ExtrudeGeometry(sh, { depth: d, bevelEnabled: false }); geo.translate(0, 0, -d/2);
+    return mesh(geo, M(c), x, y, z, g);
+  }
+  const windows = (g, w, d, y, n, zo = 0, xo = 0) => { for (let i = 0; i < n; i++) { const x = xo - w/2 + (i + .5)*w/n; box(g, 2.6, 3, .4, winMat, x, y, zo + d/2 + .21); box(g, 2.6, 3, .4, winMat, x, y, zo - d/2 - .21); } };
+  const door = (g, d, x = 0, zo = 0) => box(g, 3.4, 6, .5, '#6b4423', x, 3, zo + d/2 + .25);
+  const corners = (a, b = a) => [[-a,-b],[a,-b],[-a,b],[a,b]];
+  function tower(g, x, z, r, h, wc, rc){ mesh(new THREE.CylinderGeometry(r, r*1.08, h, 10), M(wc), x, h/2, z, g); mesh(new THREE.ConeGeometry(r*1.35, r*2.2, 10), M(rc), x, h + r*1.1, z, g); }
+  function crenel(g, w, d, y, c){ const n = Math.max(3, Math.round(w/4));
+    for (let i = 0; i < n; i++) { const o = -w/2 + (i + .5)*w/n; box(g, 2, 2.4, 2, c, o, y, d/2 - 1); box(g, 2, 2.4, 2, c, o, y, -d/2 + 1); }
+    const m = Math.max(3, Math.round(d/4)); for (let i = 0; i < m; i++) { const o = -d/2 + (i + .5)*d/m; box(g, 2, 2.4, 2, c, w/2 - 1, y, o); box(g, 2, 2.4, 2, c, -w/2 + 1, y, o); } }
+  function flagOn(g, x, y, z, c){ box(g, .6, 10, .6, '#5e3818', x, y + 5, z); box(g, 5, 3, .3, c, x + 2.6, y + 8.5, z); }
+  function wheel(g, x, y, z, r, w){ const m = mesh(new THREE.CylinderGeometry(r, r, w, 10), M('#2b2b33'), x, y, z, g); m.rotation.z = Math.PI/2; return m; }
+  function makeCar(c, police){
+    const g = new THREE.Group();
+    box(g, 6.4, 3, 11, c, 0, 2.6, 0); box(g, 5.6, 2.6, 6, police ? '#ffffff' : c, 0, 5.3, -.8);
+    box(g, 5, 1.8, .3, winMat, 0, 5.4, 2.25); box(g, 5, 1.8, .3, winMat, 0, 5.4, -3.85);
+    box(g, 1.2, .8, .3, B('#fff6c2'), -2.2, 2.8, 5.55); box(g, 1.2, .8, .3, B('#fff6c2'), 2.2, 2.8, 5.55);
+    for (const [a,b] of corners(3.2, 3.5)) wheel(g, a, 1.5, b, 1.5, 1.2);
+    if (police) { box(g, 1.3, .9, 1.3, B('#e5484d'), -1.1, 7, -.8); box(g, 1.3, .9, 1.3, B('#3e63dd'), 1.1, 7, -.8); box(g, 6.5, .8, 11.1, '#1f3a8a', 0, 2.6, 0); }
+    return g;
+  }
+  function makeMoto(c){
+    const g = new THREE.Group();
+    wheel(g, 0, 1.7, 3.2, 1.7, .8); wheel(g, 0, 1.7, -3.2, 1.7, .8);
+    box(g, 1.4, 1.8, 5.6, c, 0, 3.2, 0); box(g, 1.6, .8, 2.6, '#2b2b33', 0, 4.3, -1);
+    box(g, 4, .5, .5, '#8e98a6', 0, 5.2, 2.8); box(g, .5, 2, .5, '#8e98a6', 0, 4.4, 2.8);
+    return g;
+  }
+
+  /* kleine Gebäude */
   const builds = {};
   const MAKE = {
     brunnen(g){ mesh(new THREE.CylinderGeometry(13, 14, 10, 12), M('#9aa4b0'), 0, 5, 0, g);
@@ -680,7 +1068,7 @@ const R3 = (() => {
       for (const [a,b,w,d] of [[0,-10,22,2],[0,10,22,2],[-10,0,2,22],[10,0,2,22]]) mesh(new THREE.BoxGeometry(w, 6, d), M('#8b5a2b'), a, 50, b, g);
       const r = mesh(new THREE.ConeGeometry(18, 13, 4), M('#c0392b'), 0, 60, 0, g); r.rotation.y = Math.PI/4; },
     feld(g){ mesh(new THREE.BoxGeometry(50, 2, 34), M('#7b4f27'), 0, 1, 0, g);
-      for (let i = -2; i <= 2; i++) for (let j = -1; j <= 1; j++) { const c = mesh(new THREE.ConeGeometry(3, 7, 5), M((i+j)%2 ? '#3f9b3a' : '#f28c28'), i*9, 5, j*10, g); } },
+      for (let i = -2; i <= 2; i++) for (let j = -1; j <= 1; j++) { mesh(new THREE.ConeGeometry(3, 7, 5), M((i+j)%2 ? '#3f9b3a' : '#f28c28'), i*9, 5, j*10, g); } },
     tonnen(g){ for (const [a,b] of [[-7,0],[7,0],[0,9]]) { mesh(new THREE.CylinderGeometry(5, 5, 12, 10), M('#5e3818'), a, 6, b, g); mesh(new THREE.CylinderGeometry(4.3, 4.3, .5, 10), M('#3aa0ff'), a, 12.2, b, g, false); } },
     doener(g){ mesh(new THREE.BoxGeometry(26, 13, 16), M('#f4f1e8'), 0, 6.5, 0, g);
       const aw = mesh(new THREE.BoxGeometry(30, 1.5, 10), M('#e5484d'), 0, 16, 9, g); aw.rotation.x = .35;
@@ -696,17 +1084,97 @@ const R3 = (() => {
       for (let y = 15; y < 65; y += 14) mesh(new THREE.BoxGeometry(10 - y/10, 1, 1), M('#8e98a6'), 0, y, 0, g);
       g.userData.lamp = mesh(new THREE.SphereGeometry(2.6, 8, 6), new THREE.MeshBasicMaterial({ color: '#ff3b3b' }), 0, 72, 0, g, false); }
   };
-  // einfacher Brunnen-Ring (bevor er ausgebaut wird)
-  const oldWell = mesh(new THREE.CylinderGeometry(10, 11, 6, 10), M('#9aa4b0'), -62, 3, -30, scene);
+  /* große Gebäude (Vorderseite = +z, schaut zum Feuer) */
+  const glassMat = new THREE.MeshPhongMaterial({ color: '#cfefff', transparent: true, opacity: .45, shininess: 60, side: THREE.DoubleSide, depthWrite: false });
+  function halfTube(g, r, len, mat, x, y, z){ // liegendes Halbrohr entlang z
+    const holder = new THREE.Group(); holder.position.set(x, y, z); holder.rotation.y = Math.PI/2; g.add(holder);
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 14, 1, false, 0, Math.PI), mat); m.rotation.z = Math.PI/2; m.castShadow = m.receiveShadow = true; holder.add(m); return m;
+  }
+  const MAKE_BIG = {
+    militaer(g){
+      box(g, 60, .8, 46, '#9a9c7a', 0, .4, 0);
+      halfTube(g, 13, 30, M('#5b6b3a'), -12, 0, -6); box(g, 14, 10, .6, '#3a4422', -12, 5, 9.2);
+      for (const z of [-14, -4, 4]) box(g, 26.6, 1, 1, '#4a5a2a', -12, 12.6, z);
+      // Panzer
+      const t = new THREE.Group(); t.position.set(14, 0, 6); t.rotation.y = -.35; g.add(t);
+      box(t, 11, 4, 15, '#556b2f', 0, 3.4, 0); for (const s of [-1, 1]) box(t, 2.6, 3.4, 16, '#2b2f22', s*6.3, 1.9, 0);
+      box(t, 7, 3.2, 7, '#4a5e28', 0, 7, -1); const br = mesh(new THREE.CylinderGeometry(.7, .8, 11, 8), M('#3f4a2a'), 0, 7.2, 7, t); br.rotation.x = Math.PI/2;
+      flagOn(g, 22, 0, -16, '#e5484d'); box(g, .8, 6, .8, '#5e3818', 22, 13, -16);
+      for (let i = -3; i <= 3; i++) box(g, 4, 2.2, 3, '#c8b27a', i*4.4, 1.1, 21);
+      for (const s of [-1, 1]) for (const k of [0, 1]) box(g, 3, 3, 3, '#6b5a3a', s*26, 1.5 + k*3, -18 + k);
+    },
+    krankenhaus(g){
+      box(g, 36, 16, 22, '#f6f7fb', 0, 8, -4); box(g, 36.4, 2, 22.4, '#e5484d', 0, 14.5, -4);
+      box(g, 6, 1.6, .5, B('#e5484d'), 0, 10.5, 7.3); box(g, 1.6, 6, .5, B('#e5484d'), 0, 10.5, 7.3);
+      windows(g, 36, 22, 5, 6, -4); door(g, 22, 0, -4); box(g, 8, 1, 6, '#dfe2ea', 0, 6.2, 9);
+      mesh(new THREE.CylinderGeometry(8, 8, .6, 18), M('#3b3b48'), 6, 16.3, -6, g, false);
+      box(g, 1.2, .3, 7, B('#ffffff'), 3.6, 16.7, -6); box(g, 1.2, .3, 7, B('#ffffff'), 8.4, 16.7, -6); box(g, 4.8, .3, 1.2, B('#ffffff'), 6, 16.7, -6);
+      const amb = makeCar('#ffffff'); amb.position.set(-14, 0, 13); amb.rotation.y = .4; g.add(amb); box(amb, 6.5, .9, 11.1, '#e5484d', 0, 3.6, 0);
+    },
+    polizei(g){
+      box(g, 30, 13, 20, '#e8eef8', 0, 6.5, -3); box(g, 30.4, 2.6, 20.4, '#1f3a8a', 0, 10.4, -3);
+      box(g, 16, 3.4, .6, '#1f3a8a', 0, 15, 7.1); box(g, 12, 1.4, .3, B('#ffffff'), 0, 15, 7.5);
+      windows(g, 30, 20, 5, 5, -3); door(g, 20, 0, -3);
+      for (let i = 0; i < 4; i++) for (let b = 0; b < 3; b++) box(g, .3, 3, .3, '#2b2b33', -13 + i*2 + b*.6, 5, -13.3);
+      const car = makeCar('#ffffff', true); car.position.set(13, 0, 13); car.rotation.y = -.5; g.add(car);
+    },
+    restaurant(g){
+      box(g, 28, 12, 18, '#f6e7c1', 0, 6, -4); gable(g, 30, 7, 20, '#7a3b2e', 0, 12, -4);
+      for (let i = 0; i < 7; i++) { const a = box(g, 4, .8, 6, i % 2 ? '#ffffff' : '#e5484d', -12 + i*4, 9.6, 7.6); a.rotation.x = .4; }
+      box(g, 16, 3, .5, '#2b2b33', 0, 15.5, 5.3); box(g, 13, 1.2, .3, B('#ffd23f'), 0, 15.5, 5.6);
+      windows(g, 28, 18, 5, 4, -4); door(g, 18, 0, -4);
+      for (const x of [-10, 10]) { mesh(new THREE.CylinderGeometry(3.4, 3.4, .6, 10), M('#ffffff'), x, 5, 15, g); box(g, .6, 5, .6, '#5e3818', x, 2.5, 15);
+        mesh(new THREE.ConeGeometry(6, 3, 8), M(x < 0 ? '#e5484d' : '#3e63dd'), x, 11, 15, g); box(g, .4, 6, .4, '#5e3818', x, 8, 15); }
+    },
+    werkstatt(g){
+      box(g, 32, 14, 20, '#9aa4b0', 0, 7, -4); box(g, 32.4, 1.6, 20.4, '#f76b15', 0, 13.4, -4);
+      for (const x of [-8, 8]) { box(g, 11, 10, .5, '#c7ccd4', x, 5, 6.3); for (let y = 1; y < 10; y += 2) box(g, 11.2, .3, .3, '#8e98a6', x, y, 6.6); }
+      box(g, 14, 2.4, .5, '#2b2b33', 0, 11.6, 6.5); box(g, 10, 1, .3, B('#ffd23f'), 0, 11.6, 6.8);
+      for (const [x,z] of [[17, 6], [17, 0], [-17, 6]]) for (let k = 0; k < 3; k++) { const t = mesh(new THREE.TorusGeometry(2.4, .9, 6, 12), M('#2b2b33'), x, 1 + k*1.8, z, g); t.rotation.x = Math.PI/2; }
+      const car = makeCar('#3e63dd'); car.position.set(-4, 0, 15); car.rotation.y = .2; g.add(car);
+      box(g, 6, 3, 2, '#e5484d', 8, 1.5, 14);
+    },
+    gewaechshaus(g){
+      box(g, 34, 1.2, 24, '#7b4f27', 0, .6, 0);
+      halfTube(g, 11, 30, glassMat, 0, 0, 0);
+      for (let i = -3; i <= 3; i++) { box(g, .5, 11.5, .5, '#e6e8f2', -11, 5.7, i*4.6); box(g, .5, 11.5, .5, '#e6e8f2', 11, 5.7, i*4.6); }
+      for (let r = -2; r <= 2; r++) for (let i = -3; i <= 3; i++) mesh(new THREE.ConeGeometry(1.8, 4, 5), M(r % 2 ? '#46a758' : '#ef4444'), r*4, 3, i*4, g);
+    },
+    solar(g){
+      box(g, 50, .6, 40, '#c9c9b8', 0, .3, 0);
+      for (let i = -2; i <= 2; i++) for (let j = -1; j <= 1; j++) {
+        const p = new THREE.Group(); p.position.set(i*10, 0, j*12); g.add(p);
+        box(p, .6, 4, .6, '#8e98a6', 0, 2, 0);
+        const pn = box(p, 8.6, .5, 6, '#1b2a5a', 0, 4.8, 0); pn.rotation.x = -.5;
+        const ln = box(p, 8.6, .55, .2, '#8fb0ff', 0, 4.85, 0); ln.rotation.x = -.5;
+      }
+      box(g, 6, 5, 4, '#f4f4f4', 21, 2.5, -16); box(g, 2, 1, .2, B('#46c96b'), 21, 4, -13.9);
+    },
+    schule(g){
+      box(g, 32, 13, 18, '#ffc53d', 0, 6.5, -4); gable(g, 34, 8, 20, '#c0392b', 0, 13, -4);
+      box(g, 6, 12, 6, '#ffc53d', 0, 22, -4); mesh(new THREE.ConeGeometry(5, 6, 4), M('#c0392b'), 0, 31, -4, g).rotation.y = Math.PI/4;
+      mesh(new THREE.CylinderGeometry(2.2, 2.2, .4, 16), M('#ffffff'), 0, 24, -.8, g).rotation.x = Math.PI/2;
+      box(g, .3, 1.6, .3, '#1b1f4d', 0, 24.4, -.5);
+      windows(g, 32, 18, 6, 5, -4); door(g, 18, 0, -4);
+      for (const x of [-12, 12]) { box(g, .6, 8, .6, '#e5484d', x - 3, 4, 14); box(g, .6, 8, .6, '#e5484d', x + 3, 4, 14); box(g, 6.6, .6, .6, '#e5484d', x, 8, 14); box(g, 2, .4, 1, '#3e63dd', x, 3, 14); }
+    },
+  };
+  const bigs = {};
   function syncBuildings(){
     for (const k of S.built) if (!builds[k] && MAKE[k] && BUILD[k]) {
       const g = new THREE.Group(); g.position.set(BUILD[k].x, 0, BUILD[k].y); MAKE[k](g); scene.add(g); builds[k] = { g, t: now() };
     }
     for (const k in builds) if (!S.built.includes(k)) { scene.remove(builds[k].g); delete builds[k]; }
+    S.plaza.forEach((k, i) => { if (bigs[k] || !MAKE_BIG[k]) return;
+      const s = plazaSlot(i), g = new THREE.Group(); g.position.set(s.x, 0, s.z); g.rotation.y = Math.atan2(s.x, s.z) + Math.PI;
+      MAKE_BIG[k](g); scene.add(g); bigs[k] = { g, t: now(), i }; burst(s.x, s.z, 30, 140); });
+    for (const k in bigs) if (!S.plaza.includes(k)) { scene.remove(bigs[k].g); delete bigs[k]; }
     oldWell.visible = !builds.brunnen;
   }
+  // einfacher Brunnen-Ring (bevor er ausgebaut wird)
+  const oldWell = mesh(new THREE.CylinderGeometry(10, 11, 6, 10), M('#9aa4b0'), -62, 3, -30, scene);
 
-  /* Ringstreifen, Zaun, Bäume – werden neu gebaut, wenn das Camp einen neuen Ring bekommt */
+  /* Mauern, Fallgruben, Wald, zerstörte Stadt – werden neu gebaut, wenn sich das Camp verändert */
   let envKey = '';
   const ringMat = new THREE.MeshPhongMaterial({ color: '#9be08a', transparent: true, opacity: .35, shininess: 0, specular: 0, depthWrite: false });
   const env = new THREE.Group(); scene.add(env);
@@ -715,35 +1183,105 @@ const R3 = (() => {
   const treeRound = new THREE.IcosahedronGeometry(17, 0); treeRound.translate(0, 28, 0);
   const postGeo = new THREE.CylinderGeometry(3.2, 3.6, 22, 6); postGeo.translate(0, 11, 0);
   const tipGeo = new THREE.ConeGeometry(3.2, 6, 6); tipGeo.translate(0, 25, 0);
-  const spikeGeo = new THREE.ConeGeometry(1.6, 12, 4); spikeGeo.translate(0, 6, 0);
-  function buildEnv(mR, strong, traps){
+  const spikeGeo = new THREE.ConeGeometry(1.4, 10, 4); spikeGeo.translate(0, 5, 0);
+  const unitBox = new THREE.BoxGeometry(1, 1, 1); unitBox.translate(0, .5, 0);
+  const towerLamp = new THREE.MeshBasicMaterial({ color: '#8a7440' });
+  const isGate = (x, z) => Math.abs(x) < 24 || Math.abs(z) < 24;
+  function wallRing(R, lv){
+    const d = new THREE.Object3D();
+    if (lv <= 0) {
+      const t = new THREE.Mesh(new THREE.TorusGeometry(R, 1, 4, 160), M('#a07040')); t.rotation.x = -Math.PI/2; t.position.y = 9; env.add(t);
+      const n = Math.floor(2*Math.PI*R/45), pm = new THREE.InstancedMesh(postGeo, M('#7a4a25'), n);
+      for (let k = 0; k < n; k++) { const a = k/n*Math.PI*2; d.position.set(Math.cos(a)*R, 0, Math.sin(a)*R); d.rotation.set(0,0,0); d.scale.set(.5, .5, .5); d.updateMatrix(); pm.setMatrixAt(k, d.matrix); }
+      pm.castShadow = true; env.add(pm); return;
+    }
+    if (lv === 1) {
+      const n = Math.floor(2*Math.PI*R/8);
+      const pm = new THREE.InstancedMesh(postGeo, M('#7a4a25'), n), tm = new THREE.InstancedMesh(tipGeo, M('#5e3818'), n);
+      for (let k = 0; k < n; k++) { const a = k/n*Math.PI*2; const x = Math.cos(a)*R, z = Math.sin(a)*R;
+        d.position.set(x, 0, z); d.rotation.set(0, 0, 0); d.scale.set(1, isGate(x, z) ? 0.001 : rnd(.85, 1.1), 1); d.updateMatrix(); pm.setMatrixAt(k, d.matrix); tm.setMatrixAt(k, d.matrix); }
+      pm.castShadow = tm.castShadow = true; env.add(pm); env.add(tm);
+      for (const [x,z] of [[0,-R],[0,R],[-R,0],[R,0]]) { const g = new THREE.Mesh(new THREE.BoxGeometry(48, 4, 4), M('#5e3818')); g.position.set(x, 26, z); if (x) g.rotation.y = Math.PI/2; g.castShadow = true; env.add(g); }
+      return;
+    }
+    // Stein (2) und Festung (3)
+    const h = lv === 2 ? 16 : 24, seg = 12, n = Math.floor(2*Math.PI*R/seg);
+    const wm = new THREE.InstancedMesh(unitBox, M(lv === 2 ? '#a9aeb6' : '#80868f'), n), cm = new THREE.InstancedMesh(unitBox, M(lv === 2 ? '#959ba6' : '#6a7079'), n);
+    let k = 0, c = 0;
+    for (let i = 0; i < n; i++) { const a = i/n*Math.PI*2, x = Math.cos(a)*R, z = Math.sin(a)*R; if (isGate(x, z)) continue;
+      d.position.set(x, 0, z); d.rotation.set(0, -a - Math.PI/2, 0); d.scale.set(seg + 1, h, 6); d.updateMatrix(); wm.setMatrixAt(k++, d.matrix);
+      if (i % 2) { d.position.y = h; d.scale.set(seg*.5, 3.4, 6.6); d.updateMatrix(); cm.setMatrixAt(c++, d.matrix); } }
+    wm.count = k; cm.count = c; wm.castShadow = wm.receiveShadow = cm.castShadow = true; env.add(wm); env.add(cm);
+    // Türme an den Toren (+ bei der Festung ringsum)
+    const tw = [];
+    for (const base of [0, Math.PI/2, Math.PI, Math.PI*1.5]) for (const s of [-1, 1]) tw.push(base + s*30/R);
+    if (lv === 3) for (let i = 0; i < 16; i++) { const a = Math.PI/16 + i*Math.PI/8; tw.push(a); }
+    const tg = new THREE.CylinderGeometry(7, 7.6, h + 10, 10); tg.translate(0, (h + 10)/2, 0);
+    const rg = new THREE.CylinderGeometry(8.6, 8.6, 3, 10); rg.translate(0, h + 11.5, 0);
+    const lg = new THREE.SphereGeometry(2.4, 8, 6); lg.translate(0, h + 15, 0);
+    const tm = new THREE.InstancedMesh(tg, M(lv === 2 ? '#9ba1ab' : '#737983'), tw.length), rm = new THREE.InstancedMesh(rg, M('#5f6570'), tw.length), lm = new THREE.InstancedMesh(lg, towerLamp, tw.length);
+    tw.forEach((a, i) => { d.position.set(Math.cos(a)*R, 0, Math.sin(a)*R); d.rotation.set(0, 0, 0); d.scale.setScalar(1); d.updateMatrix(); tm.setMatrixAt(i, d.matrix); rm.setMatrixAt(i, d.matrix); lm.setMatrixAt(i, d.matrix); });
+    tm.castShadow = rm.castShadow = true; env.add(tm); env.add(rm); env.add(lm);
+    for (const [x,z] of [[0,-R],[0,R],[-R,0],[R,0]]) { const g = new THREE.Mesh(new THREE.BoxGeometry(50, 5, 7), M('#6a7079')); g.position.set(x, h + 4, z); if (x) g.rotation.y = Math.PI/2; g.castShadow = true; env.add(g); }
+  }
+  function pitsRing(R){
+    const d = new THREE.Object3D(), n = Math.floor(2*Math.PI*R/55), list = [];
+    for (let k = 0; k < n; k++) { const a = (k + .5)/n*Math.PI*2, x = Math.cos(a)*R, z = Math.sin(a)*R; if (!isGate(x, z)) list.push([x, z, a]); }
+    const pg = new THREE.CylinderGeometry(10, 10, .8, 14); pg.translate(0, .4, 0);
+    const pm = new THREE.InstancedMesh(pg, M('#4a3520'), list.length), sm = new THREE.InstancedMesh(spikeGeo, M('#c9b48a'), list.length*6);
+    let s = 0;
+    list.forEach(([x, z], i) => { d.position.set(x, 0, z); d.rotation.set(0, 0, 0); d.scale.setScalar(1); d.updateMatrix(); pm.setMatrixAt(i, d.matrix);
+      for (let j = 0; j < 6; j++) { const b = j/6*Math.PI*2; d.position.set(x + Math.cos(b)*5, 0, z + Math.sin(b)*5); d.rotation.set(Math.cos(b)*.45, 0, -Math.sin(b)*.45); d.updateMatrix(); sm.setMatrixAt(s++, d.matrix); } });
+    pm.receiveShadow = true; sm.castShadow = true; env.add(pm); env.add(sm);
+  }
+  function ruinedCity(wall){
+    const d = new THREE.Object3D(), N = 90;
+    const bm = new THREE.InstancedMesh(unitBox, PH({}), N), wm2 = new THREE.InstancedMesh(unitBox, B('#2b2f3a'), N);
+    let k = 0;
+    for (let j = 0; j < N*3 && k < N; j++) {
+      const a = -Math.PI/2 + rnd(-.6, .6), r = wall + rnd(1090, 1750), x = Math.cos(a)*r, z = Math.sin(a)*r;
+      if (Math.abs(x) < 40) continue;
+      const w = rnd(30, 70), h = rnd(25, 150), dd = rnd(30, 70), ry = rnd(-.2, .2);
+      d.position.set(x, 0, z); d.rotation.set(rnd(-.03, .03), ry, rnd(-.05, .05)); d.scale.set(w, h, dd); d.updateMatrix(); bm.setMatrixAt(k, d.matrix);
+      bm.setColorAt(k, new THREE.Color(pick(['#8a8f99','#7a7f88','#9a9488','#6f747d','#a19a8c'])));
+      d.position.set(x, h*.35, z); d.scale.set(w*.6, h*.45, dd + .6); d.updateMatrix(); wm2.setMatrixAt(k, d.matrix); k++;
+    }
+    bm.count = wm2.count = k; bm.castShadow = bm.receiveShadow = true; env.add(bm); env.add(wm2);
+    const rub = new THREE.InstancedMesh(new THREE.DodecahedronGeometry(1, 0), M('#7d7a72'), 160);
+    for (let i = 0; i < 160; i++) { const a = -Math.PI/2 + rnd(-.65, .65), r = wall + rnd(1060, 1800); d.position.set(Math.cos(a)*r, 1, Math.sin(a)*r); d.rotation.set(rnd(0,3), rnd(0,3), 0); d.scale.setScalar(rnd(3, 9)); d.updateMatrix(); rub.setMatrixAt(i, d.matrix); }
+    env.add(rub);
+    // Autobahn + Tankstelle vor der Stadt
+    const zr = -(wall + 1030);
+    const road = new THREE.Mesh(new THREE.BoxGeometry(5200, 1.2, 38), M('#55585f')); road.position.set(0, .6, zr); road.receiveShadow = true; env.add(road);
+    const dash = new THREE.InstancedMesh(unitBox, B('#e9e3c9'), 120);
+    for (let i = 0; i < 120; i++) { d.position.set(-2600 + i*44, 1.2, zr); d.rotation.set(0, 0, 0); d.scale.set(20, .2, 1.4); d.updateMatrix(); dash.setMatrixAt(i, d.matrix); }
+    env.add(dash);
+    const gs = new THREE.Group(); gs.position.set(150, 0, zr + 50); env.add(gs);
+    box(gs, 46, 2.4, 26, '#f4f4f4', 0, 18, 0); box(gs, 46.4, 1.4, 26.4, '#e5484d', 0, 17.6, 0);
+    for (const [a,b] of corners(18, 9)) box(gs, 1.6, 17, 1.6, '#d0d0d0', a, 8.5, b);
+    for (const x of [-9, 9]) { box(gs, 3, 6, 2, '#e5484d', x, 3, 0); box(gs, 2, 2, .3, B('#fff6c2'), x, 4.6, 1.1); }
+    box(gs, 26, 12, 14, '#f4f1e8', 0, 6, -24); box(gs, 26.4, 2.4, 14.4, '#e5484d', 0, 11, -24); box(gs, 10, 5, .3, winMat, 0, 4, -16.9);
+    box(gs, 2, 28, 2, '#8e98a6', 30, 14, 10); box(gs, 9, 9, 1.2, '#e5484d', 30, 30, 10);
+    const wreck = makeCar('#8a7a6a'); wreck.position.set(-260, 0, zr + 6); wreck.rotation.set(0, 1.2, .25); env.add(wreck);
+    const wreck2 = makeCar('#5e6b7a'); wreck2.position.set(420, 0, zr - 8); wreck2.rotation.y = 1.8; env.add(wreck2);
+  }
+  function buildEnv(mR){
     while (env.children.length) env.remove(env.children[0]);
     const d = new THREE.Object3D();
     let i = 0;
-    for (let R = 150; R <= mR + 1; R += 36, i++) {
+    for (let R = R0; R <= mR + 1; R += 36, i++) {
       if (i % 2) continue;
       const r = new THREE.Mesh(new THREE.RingGeometry(R - 18, R + 18, 96), ringMat); r.rotation.x = -Math.PI/2; r.position.y = .3; r.receiveShadow = true; env.add(r);
     }
-    if (S.people.length > 500) { const R = pos[499].R + 18; const r = new THREE.Mesh(new THREE.RingGeometry(R - 2.5, R + 2.5, 128), B('#ffd23f')); r.rotation.x = -Math.PI/2; r.position.y = .6; env.add(r); }
+    // Viertel-Mauern (Gründerhof, 1. Außenring …)
     const wall = mR + 40;
-    if (strong) {
-      const n = Math.floor(2*Math.PI*wall/8);
-      const pm = new THREE.InstancedMesh(postGeo, M('#7a4a25'), n), tm = new THREE.InstancedMesh(tipGeo, M('#5e3818'), n);
-      for (let k = 0; k < n; k++) { const a = k/n*Math.PI*2; const x = Math.cos(a)*wall, z = Math.sin(a)*wall;
-        const open = Math.abs(x) < 20 || Math.abs(z) < 20; d.position.set(x, 0, z); d.rotation.set(0, 0, 0); d.scale.set(1, open ? 0.001 : rnd(.85, 1.1), 1); d.updateMatrix(); pm.setMatrixAt(k, d.matrix); tm.setMatrixAt(k, d.matrix); }
-      pm.castShadow = tm.castShadow = true; env.add(pm); env.add(tm);
-      for (const [x,z] of [[0,-wall],[0,wall],[-wall,0],[wall,0]]) { const g = new THREE.Mesh(new THREE.BoxGeometry(44, 4, 4), M('#5e3818')); g.position.set(x, 26, z); if (x) g.rotation.y = Math.PI/2; g.castShadow = true; env.add(g); }
-    } else {
-      const t = new THREE.Mesh(new THREE.TorusGeometry(wall, 1, 4, 160), M('#a07040')); t.rotation.x = -Math.PI/2; t.position.y = 9; env.add(t);
-      const n = Math.floor(2*Math.PI*wall/45), pm = new THREE.InstancedMesh(postGeo, M('#7a4a25'), n);
-      for (let k = 0; k < n; k++) { const a = k/n*Math.PI*2; d.position.set(Math.cos(a)*wall, 0, Math.sin(a)*wall); d.rotation.set(0,0,0); d.scale.set(.5, .5, .5); d.updateMatrix(); pm.setMatrixAt(k, d.matrix); }
-      pm.castShadow = true; env.add(pm);
+    for (let b = 0; b < BANDS.length; b++) {
+      const R = bandR(b); if (!R || R > wall - 30) continue;
+      if (S.walls.includes(b)) wallRing(R, Math.max(1, S.wallLv));
+      else if (b === 0) { const r = new THREE.Mesh(new THREE.RingGeometry(R - 2.5, R + 2.5, 128), B('#ffd23f')); r.rotation.x = -Math.PI/2; r.position.y = .6; env.add(r); }
     }
-    if (traps) {
-      const n = Math.floor(2*Math.PI*(wall+30)/14), sm = new THREE.InstancedMesh(spikeGeo, M('#4a2c12'), n);
-      for (let k = 0; k < n; k++) { const a = k/n*Math.PI*2; d.position.set(Math.cos(a)*(wall+30), 0, Math.sin(a)*(wall+30)); d.rotation.set(0, 0, 0); d.rotateOnAxis(new THREE.Vector3(Math.sin(a), 0, -Math.cos(a)), .6); d.scale.setScalar(1); d.updateMatrix(); sm.setMatrixAt(k, d.matrix); }
-      sm.castShadow = true; env.add(sm);
-    }
+    wallRing(wall, S.wallLv);
+    if (S.built.includes('fallen')) pitsRing(wall + 34);
     // Wald rund ums Camp
     const T = 260, fm = new THREE.InstancedMesh(treeCone, M('#2f7d3b'), T), tr = new THREE.InstancedMesh(treeTrunk, M('#6b4423'), T);
     let k = 0;
@@ -761,6 +1299,7 @@ const R3 = (() => {
       rm.setColorAt(k, new THREE.Color(pick(['#4caf50','#5cb85c','#43a047','#7cb342','#9ccc65']))); k++;
     }
     rm.count = rt.count = k; rm.castShadow = rt.castShadow = true; env.add(rm); env.add(rt);
+    ruinedCity(wall);
     // Schattenbereich anpassen
     const sc = sun.shadow.camera, ext = wall + 160; sc.left = sc.bottom = -ext; sc.right = sc.top = ext; sc.near = 10; sc.far = 3000; sc.updateProjectionMatrix();
   }
@@ -816,21 +1355,6 @@ const R3 = (() => {
   }
 
   /* Häuser: 15 Stufen, vom Zelt bis zur Drachenburg */
-  const winMat = new THREE.MeshBasicMaterial({ color: '#9fc9e8' });
-  const box = (g, w, h, d, c, x, y, z) => mesh(new THREE.BoxGeometry(w, h, d), typeof c === 'string' ? M(c) : c, x, y, z, g);
-  function gable(g, w, h, d, c, x, y, z){
-    const sh = new THREE.Shape(); sh.moveTo(-w/2, 0); sh.lineTo(w/2, 0); sh.lineTo(0, h); sh.lineTo(-w/2, 0);
-    const geo = new THREE.ExtrudeGeometry(sh, { depth: d, bevelEnabled: false }); geo.translate(0, 0, -d/2);
-    return mesh(geo, M(c), x, y, z, g);
-  }
-  const windows = (g, w, d, y, n, zo = 0, xo = 0) => { for (let i = 0; i < n; i++) { const x = xo - w/2 + (i + .5)*w/n; box(g, 2.6, 3, .4, winMat, x, y, zo + d/2 + .21); box(g, 2.6, 3, .4, winMat, x, y, zo - d/2 - .21); } };
-  const door = (g, d, x = 0, zo = 0) => box(g, 3.4, 6, .5, '#6b4423', x, 3, zo + d/2 + .25);
-  const corners = (a, b = a) => [[-a,-b],[a,-b],[-a,b],[a,b]];
-  function tower(g, x, z, r, h, wc, rc){ mesh(new THREE.CylinderGeometry(r, r*1.08, h, 10), M(wc), x, h/2, z, g); mesh(new THREE.ConeGeometry(r*1.35, r*2.2, 10), M(rc), x, h + r*1.1, z, g); }
-  function crenel(g, w, d, y, c){ const n = Math.max(3, Math.round(w/4));
-    for (let i = 0; i < n; i++) { const o = -w/2 + (i + .5)*w/n; box(g, 2, 2.4, 2, c, o, y, d/2 - 1); box(g, 2, 2.4, 2, c, o, y, -d/2 + 1); }
-    const m = Math.max(3, Math.round(d/4)); for (let i = 0; i < m; i++) { const o = -d/2 + (i + .5)*d/m; box(g, 2, 2.4, 2, c, w/2 - 1, y, o); box(g, 2, 2.4, 2, c, -w/2 + 1, y, o); } }
-  function flagOn(g, x, y, z, c){ box(g, .6, 10, .6, '#5e3818', x, y + 5, z); box(g, 5, 3, .3, c, x + 2.6, y + 8.5, z); }
   function buildModel(st, ck){
     const g = new THREE.Group(), R = FARBEN[ck];
     const roof = R || ['#c0392b','#2c3e50','#d9483b','#3e63dd','#2f6b3a','#7a3b2e'][st % 6];
@@ -866,7 +1390,7 @@ const R3 = (() => {
         box(g, 11, 30, 11, '#2f2f3a', 0, 15, 0); crenel(g, 11, 11, 31.2, '#2f2f3a'); for (const y of [10, 18, 24]) box(g, 2.4, 3.4, .4, B('#ff4a1a'), 0, y, 5.7); flagOn(g, 0, 30, 0, '#7a1f2b'); break;
     }
     const bb = new THREE.Box3().setFromObject(g), sz = bb.getSize(new THREE.Vector3());
-    g.scale.setScalar(Math.min(1, 30 / Math.max(sz.x, sz.z)));
+    g.scale.setScalar(Math.min(1, 26 / Math.max(sz.x, sz.z)));
     return g;
   }
   function makePet(type){
@@ -875,7 +1399,7 @@ const R3 = (() => {
     for (const [a,b] of corners(dog ? 1.4 : 1.1, dog ? 2.6 : 2.2)) box(g, 1, dog ? 2.4 : 2, 1, c, a, dog ? 1.2 : 1, b);
     const head = box(g, dog ? 3.6 : 3, dog ? 3.2 : 2.8, dog ? 3.4 : 2.8, c, 0, dog ? 6 : 5, dog ? 4.4 : 3.6);
     if (dog) { box(head.parent, 1, 2.4, 1.6, '#5e3818', -1.8, 6.4, 4.4); box(head.parent, 1, 2.4, 1.6, '#5e3818', 1.8, 6.4, 4.4); box(g, 1.6, 1.2, 1.4, '#2b2b33', 0, 5.4, 6.2); }
-    else { for (const s of [-1, 1]) { const e = mesh(new THREE.ConeGeometry(.8, 1.8, 4), M(c), s*.9, 7.1, 3.6, g); } }
+    else { for (const s of [-1, 1]) mesh(new THREE.ConeGeometry(.8, 1.8, 4), M(c), s*.9, 7.1, 3.6, g); }
     const tail = new THREE.Group(); tail.position.set(0, dog ? 4.6 : 3.8, dog ? -3.6 : -3); g.add(tail);
     const tm = box(tail, .8, .8, dog ? 3 : 4, c, 0, dog ? 1 : 1.5, -1.4); tm.rotation.x = dog ? -.8 : -1.1;
     g.userData.tail = tail; return g;
@@ -891,6 +1415,21 @@ const R3 = (() => {
       const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute([0,0,-4, s*18,2,0, 0,0,5, s*18,2,0, s*12,0,-6, 0,0,-4], 3)); geo.computeVertexNormals();
       const w = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ color: '#c0392b', side: THREE.DoubleSide, flatShading: true, shininess: 0 })); w.castShadow = true; p.add(w); return p; });
     g.userData.wings = wings; return g;
+  }
+  /* Extras ums Haus (lokal: Haus schaut nach +z) */
+  function addExtras(outer, p){
+    const up = p.up || {}, c = FARBEN[p.c] || COLORS[hash(p.u) % COLORS.length];
+    if (up.garten) { const g = new THREE.Group(); g.position.set(-17, 0, -7); outer.add(g); box(g, 9, 1, 8, '#7b4f27', 0, .5, 0);
+      for (let i = -1; i <= 1; i++) for (const j of [-2, 2]) mesh(new THREE.ConeGeometry(1.5, 3.4, 5), M(j < 0 ? '#3f9b3a' : '#f28c28'), i*3, 2.6, j, g); }
+    if (up.zaun) { const n = 26; for (let k = 0; k < n; k++) { const a = k/n*Math.PI*2, x = Math.sin(a)*19, z = Math.cos(a)*19; if (z > 15 && Math.abs(x) < 6) continue; box(outer, .9, 4, .9, '#d8b07a', x, 2, z); }
+      const t = mesh(new THREE.TorusGeometry(19, .35, 4, 40), M('#d8b07a'), 0, 3.2, 0, outer, false); t.rotation.x = Math.PI/2; }
+    if (up.auto) { const car = makeCar(c); car.position.set(-13, 0, 14); car.rotation.y = .5; outer.add(car); }
+    if (up.motorrad) { const m = makeMoto(c); m.position.set(17, 0, 7); m.rotation.y = -.4; outer.add(m); }
+    if (up.solar) { for (const x of [13, 20]) { const g = new THREE.Group(); g.position.set(x, 0, -13); outer.add(g); box(g, .5, 4, .5, '#8e98a6', 0, 2, 0); const pn = box(g, 6, .4, 5, '#1b2a5a', 0, 4.6, 0); pn.rotation.x = -.55; } }
+    if (up.flagge) flagOn(outer, -13, 0, -15, c);
+    if (up.wachturm) { const g = new THREE.Group(); g.position.set(0, 0, -21); outer.add(g);
+      for (const [a,b] of corners(3)) box(g, .8, 20, .8, '#7a4a25', a, 10, b); box(g, 9, 1, 9, '#8b5a2b', 0, 20, 0);
+      const r = mesh(new THREE.ConeGeometry(7, 5, 4), M('#c0392b'), 0, 24, 0, g); r.rotation.y = Math.PI/4; }
   }
   function makeScaffold(){
     const g = new THREE.Group(), y0 = '#f5b301';
@@ -915,13 +1454,15 @@ const R3 = (() => {
 
   const houses = new Map(); // no -> { outer, st, key, t, pet, dragon, scaffold }
   const plotGeo = new THREE.RingGeometry(16, 17.6, 40), plotMat = new THREE.MeshBasicMaterial({ color: '#ffd23f', transparent: true, opacity: .8 });
+  const houseKey = p => p.st + '|' + (p.c || '') + '|' + (p.pet || '') + '|' + (p.drache || p.st >= 14 ? 1 : 0) + '|' + Object.keys(p.up || {}).sort().join(',');
   function removeHouse(no){ const h = houses.get(no); if (!h) return; if (h.outer) scene.remove(h.outer); if (h.scaffold) scene.remove(h.scaffold.g); if (h.dragon) scene.remove(h.dragon); houses.delete(no); }
   function placeHouse(p, k, pop){
     removeHouse(p.no);
     const q = pos[k], outer = new THREE.Group(); outer.position.set(q.x, 0, q.y); outer.rotation.y = Math.atan2(q.x, q.y) + Math.PI;
     const plot = new THREE.Mesh(plotGeo, plotMat); plot.rotation.x = -Math.PI/2; plot.position.y = .5; outer.add(plot);
     const inner = buildModel(p.st, p.c); outer.add(inner);
-    const h = { outer, inner, st: p.st, key: p.st + '|' + (p.c || '') + '|' + (p.pet || '') + '|' + (p.drache || p.st >= 14 ? 1 : 0), t: pop ? now() : 0 };
+    addExtras(outer, p);
+    const h = { outer, inner, st: p.st, key: houseKey(p), t: pop ? now() : 0 };
     if (p.pet) { h.pet = makePet(p.pet); h.pet.position.set(11, 0, 14); h.pet.rotation.y = .6; outer.add(h.pet); }
     if (p.drache || p.st >= 14) { h.dragon = makeDragon(FARBEN[p.c]); h.dragon.userData.c = [q.x, q.y]; scene.add(h.dragon); }
     scene.add(outer); houses.set(p.no, h);
@@ -931,7 +1472,7 @@ const R3 = (() => {
     if (full) { [...houses.keys()].forEach(removeHouse); }
     S.people.forEach((p, k) => {
       if (!(p.st > 0)) return;
-      const key = p.st + '|' + (p.c || '') + '|' + (p.pet || '') + '|' + (p.drache || p.st >= 14 ? 1 : 0);
+      const key = houseKey(p);
       const h = houses.get(p.no);
       if (h && (h.key === key || h.scaffold)) return;
       if (!full && (!h || p.st > h.st)) {
@@ -941,12 +1482,16 @@ const R3 = (() => {
       } else placeHouse(p, k, !full);
     });
   }
-  const hiddenTent = no => { const h = houses.get(no); return !!(h && h.outer); };  /* Überlebende laufen durchs Camp */
-  const WN = 70, walkers = [];
+  const hiddenTent = no => { const h = houses.get(no); return !!(h && h.outer); };
+
+  /* Figuren-Bausteine */
   const bodyGeo = new THREE.CylinderGeometry(2.4, 3.1, 8, 6); bodyGeo.translate(0, 9, 0);
   const headGeo = new THREE.SphereGeometry(2.5, 8, 6); headGeo.translate(0, 15.6, 0);
   const hairGeo = new THREE.SphereGeometry(2.7, 8, 4, 0, Math.PI*2, 0, Math.PI/2); hairGeo.translate(0, 16.1, 0);
   const legGeo = new THREE.BoxGeometry(4.2, 5, 2.2); legGeo.translate(0, 2.5, 0);
+
+  /* Überlebende laufen durchs Camp */
+  const WN = 70, walkers = [];
   const wb = new THREE.InstancedMesh(bodyGeo, PH({}), WN), wh = new THREE.InstancedMesh(headGeo, PH({}), WN), whr = new THREE.InstancedMesh(hairGeo, PH({}), WN), wl = new THREE.InstancedMesh(legGeo, M('#2f3550'), WN);
   for (let i = 0; i < WN; i++) {
     walkers.push({ x: rnd(-90, 90), z: rnd(-90, 90), tx: rnd(-90, 90), tz: rnd(-90, 90), wait: rnd(0, 4000), sp: rnd(13, 21), ph: rnd(0, 7), yaw: 0 });
@@ -959,8 +1504,8 @@ const R3 = (() => {
   function newTarget(w){
     const n = S.people.length;
     if (nightK > .5) { const a = rnd(0, Math.PI*2), r = rnd(46, 60); w.tx = Math.cos(a)*r; w.tz = Math.sin(a)*r; return; }
-    if (n && Math.random() < .55) { const q = pos[Math.floor(Math.random()*n)], d = Math.hypot(q.x, q.y); w.tx = q.x*(1 - 16/d); w.tz = q.y*(1 - 16/d); }
-    else { const a = rnd(0, Math.PI*2), r = rnd(50, 108); w.tx = Math.cos(a)*r; w.tz = Math.sin(a)*r; }
+    if (n && Math.random() < .5) { const q = pos[Math.floor(Math.random()*n)], d = Math.hypot(q.x, q.y); w.tx = q.x*(1 - 16/d); w.tz = q.y*(1 - 16/d); }
+    else { const a = rnd(0, Math.PI*2), r = rnd(50, 205); w.tx = Math.cos(a)*r; w.tz = Math.sin(a)*r; }
   }
   let wasNight = false;
   function updWalkers(t, dt){
@@ -978,6 +1523,54 @@ const R3 = (() => {
       dummy.scale.set(1, moving ? .75 + sw*.35 : 1, 1); dummy.updateMatrix(); wl.setMatrixAt(i, dummy.matrix);
     }
     wAll.forEach(m => { m.count = active; m.instanceMatrix.needsUpdate = true; });
+  }
+
+  /* Berufe: Soldaten vor der Basis, Ärzte vorm Krankenhaus … */
+  const CN = 160, crew = [];
+  const capGeo = new THREE.CylinderGeometry(2.9, 3, 1.8, 8); capGeo.translate(0, 17.4, 0);
+  const cb = new THREE.InstancedMesh(bodyGeo, PH({}), CN), chd = new THREE.InstancedMesh(headGeo, PH({}), CN), cc = new THREE.InstancedMesh(capGeo, PH({}), CN), cl = new THREE.InstancedMesh(legGeo, M('#2f3550'), CN);
+  const cAll = [cb, chd, cc, cl];
+  cAll.forEach(m => { m.castShadow = true; m.count = 0; m.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(m); });
+  let cmdPos = null;
+  function buildCrew(){
+    crew.length = 0; cmdPos = null;
+    const groups = {};
+    S.people.forEach(p => { if (!p.job || !JOBS[p.job]) return; const at = JOBS[p.job].at;
+      const key = at === 'gate' ? 'gate' : (at && S.plaza.includes(at)) ? at : 'lager'; (groups[key] = groups[key] || []).push(p); });
+    const wall = maxR() + 40;
+    const line = (list, cx, cz, yaw, max, rowDir) => {
+      const px = Math.cos(yaw), pz = -Math.sin(yaw), fx = Math.sin(yaw), fz = Math.cos(yaw);
+      list.slice(0, max).forEach((p, j) => { const row = Math.floor(j / 8), col2 = j % 8, cnt = Math.min(8, list.length - row*8);
+        crew.push({ p, x: cx + px*(col2 - (cnt - 1)/2)*7 - fx*row*8*(rowDir || 1), z: cz + pz*(col2 - (cnt - 1)/2)*7 - fz*row*8*(rowDir || 1), yaw, ph: rnd(0, 7) }); });
+    };
+    for (const key in groups) {
+      let list = groups[key];
+      if (key === 'gate') {
+        const gates = [[0, -(wall - 16), 0], [0, wall - 16, Math.PI], [-(wall - 16), 0, Math.PI/2], [wall - 16, 0, -Math.PI/2]];
+        gates.forEach((g, gi) => line(list.filter((_, j) => j % 4 === gi), g[0], g[1], g[2] + Math.PI, 3));
+        continue;
+      }
+      if (key === 'lager') { line(list, -150, 0, Math.PI/2 + Math.PI, 16); continue; }
+      const i = S.plaza.indexOf(key), s = plazaSlot(i), r = 170 - 38;
+      if (key === 'militaer' && S.cmd) { const c = list.find(p => p.u === S.cmd); if (c) { list = [c, ...list.filter(p => p !== c)]; } }
+      const yaw = Math.atan2(-s.x, -s.z);
+      line(list, Math.cos(s.a)*r, Math.sin(s.a)*r, yaw, 16, -1);
+    }
+    crew.forEach((m, i) => {
+      if (i >= CN) return;
+      const j = JOBS[m.p.job], isCmd = m.p.u === S.cmd;
+      cb.setColorAt(i, col.set(isCmd ? '#2b331d' : j.col)); cc.setColorAt(i, col.set(isCmd ? '#ffd23f' : j.hat));
+      chd.setColorAt(i, col.set(pick(['#f1c27d','#e0ac69','#c68642','#8d5524','#ffdbac'])));
+      if (isCmd) cmdPos = m;
+    });
+    [cb, chd, cc].forEach(m => { if (m.instanceColor) m.instanceColor.needsUpdate = true; });
+  }
+  function updCrew(t){
+    const n = Math.min(CN, crew.length);
+    for (let i = 0; i < n; i++) { const m = crew[i], isCmd = m.p.u === S.cmd;
+      dummy.position.set(m.x, Math.max(0, Math.sin(t/400 + m.ph)) * .5, m.z); dummy.rotation.set(0, m.yaw, 0); dummy.scale.setScalar(isCmd ? 1.2 : 1); dummy.updateMatrix();
+      cb.setMatrixAt(i, dummy.matrix); chd.setMatrixAt(i, dummy.matrix); cc.setMatrixAt(i, dummy.matrix); cl.setMatrixAt(i, dummy.matrix); }
+    cAll.forEach(m => { m.count = n; m.instanceMatrix.needsUpdate = true; });
   }
 
   /* Zombies */
@@ -1013,12 +1606,12 @@ const R3 = (() => {
   let lastN = -1;
   function render(t, dt){
     const n = S.people.length, mR = maxR();
-    const strong = S.built.includes('mauer') || S.stats.vert >= 60;
-    const key = mR + '|' + strong + '|' + S.built.includes('fallen') + '|' + (n > 500);
-    if (key !== envKey) { envKey = key; buildEnv(mR, strong, S.built.includes('fallen')); }
+    const key = mR + '|' + S.wallLv + '|' + S.walls.join(',') + '|' + S.built.includes('fallen') + '|' + (n > BANDS[0]);
+    if (key !== envKey) { envKey = key; buildEnv(mR); crewDirty = true; }
     if (n !== lastN) { syncTents(n < lastN || lastN < 0); syncHouses(n < lastN || lastN < 0); lastN = n; }
     syncBuildings();
     if (houseDirty) { houseDirty = false; syncHouses(false); }
+    if (crewDirty) { crewDirty = false; buildCrew(); }
 
     // Einzugs-Animation (Zelt fällt vom Himmel)
     let upd = false;
@@ -1040,14 +1633,13 @@ const R3 = (() => {
     for (let i = 0; i < EMB; i++) { const e = emb[i]; e.y += e.v*dt/1000; e.x += Math.sin(t/300 + i)*.05; if (e.y > 90) { e.y = 8; e.x = rnd(-6,6); e.z = rnd(-6,6); } embPos[i*3] = e.x; embPos[i*3+1] = e.y; embPos[i*3+2] = e.z; }
     embGeo.attributes.position.needsUpdate = true;
 
-    updWalkers(t, dt);
+    updWalkers(t, dt); updCrew(t);
     for (let i = 0; i < SMK; i++) { const e = smk[i]; e.y += e.v*dt/1000; e.x += dt/1000*(6 + Math.sin(t/900 + i)*3); if (e.y > 190) { e.y = 34; e.x = rnd(-4,4); e.z = rnd(-4,4); } smkPos[i*3] = e.x; smkPos[i*3+1] = e.y; smkPos[i*3+2] = e.z; }
     smkGeo.attributes.position.needsUpdate = true;
     { const a = flagGeo.attributes.position.array; for (let i = 0; i < a.length; i += 3) { const x = flagBase[i]; a[i+2] = Math.sin(x*.32 - t/160) * x * .09; } flagGeo.attributes.position.needsUpdate = true; flagGeo.computeVertexNormals(); }
-    clouds.forEach(c => { c.g.position.x += c.v*dt/1000; if (c.g.position.x > 2000) c.g.position.x = -2000; });
     starMat.opacity = nightK; lanternMat.color.set('#8a7440').lerp(new THREE.Color('#ffe9a0'), nightK);
+    towerLamp.color.set('#8a7440').lerp(new THREE.Color('#fff3b0'), nightK);
     smkMat.color.set('#bfbfbf').lerp(new THREE.Color('#3a3f5a'), nightK);
-    clouds.forEach(c => c.g.children.forEach(m => m.material.color.set('#ffffff').lerp(new THREE.Color('#2a3155'), nightK)));
     // Tag / Nacht
     scene.background.copy(DAY_BG).lerp(NIGHT_BG, nightK); scene.fog.color.copy(scene.background);
     hemi.intensity = .5 - .36*nightK; sun.intensity = .75 - .67*nightK;
@@ -1056,7 +1648,9 @@ const R3 = (() => {
     if (builds.funk) builds.funk.g.userData.lamp.visible = (Math.floor(t/600) % 2 === 0) || nightK < .3;
 
     // Gebäude ploppen auf
-    for (const k in builds) { const b = builds[k], a = Math.min(1, (t - b.t)/700); b.g.scale.setScalar(a < 1 ? 1 + 2.7*Math.pow(a-1,3) + 1.7*Math.pow(a-1,2) : 1); }
+    const popS = a => a < 1 ? 1 + 2.7*Math.pow(a-1,3) + 1.7*Math.pow(a-1,2) : 1;
+    for (const k in builds) { const b = builds[k]; b.g.scale.setScalar(popS(Math.min(1, (t - b.t)/700))); }
+    for (const k in bigs) { const b = bigs[k]; b.g.scale.setScalar(popS(Math.min(1, (t - b.t)/900))); }
     houses.forEach((h, no) => {
       if (h.scaffold) {
         const a = (t - h.scaffold.t) / 1600, sg = h.scaffold.g;
@@ -1065,7 +1659,7 @@ const R3 = (() => {
         return;
       }
       if (!h.outer) return;
-      const a = h.t ? Math.min(1, (t - h.t)/700) : 1; h.outer.scale.setScalar(a < 1 ? 1 + 2.7*Math.pow(a-1,3) + 1.7*Math.pow(a-1,2) : 1);
+      const a = h.t ? Math.min(1, (t - h.t)/700) : 1; h.outer.scale.setScalar(popS(a));
       if (h.pet) { h.pet.userData.tail.rotation.y = Math.sin(t/90) * .6; h.pet.position.y = Math.abs(Math.sin(t/300 + no)) * 1.2; }
       if (h.dragon) { const [cx, cz] = h.dragon.userData.c, ang = t/2600 + no, r = 30;
         h.dragon.position.set(cx + Math.cos(ang)*r, 58 + Math.sin(t/700)*4, cz + Math.sin(ang)*r); h.dragon.rotation.y = -ang;
@@ -1087,16 +1681,19 @@ const R3 = (() => {
     zMeshes.forEach((g, z) => { if (!alive.has(z)) { scene.remove(g); zMeshes.delete(z); } });
 
     // Kamera: langsame Kreisfahrt, Abstand passt sich der Campgröße an
-    const viewR = Math.max(mR + 95, 250);
+    const viewR = Math.max(mR + 95, 300);
     const vHalf = THREE.MathUtils.degToRad(camera.fov/2);
     const eff = Math.atan(Math.tan(vHalf) * Math.min(camera.aspect, 1) * (H > W ? .98 : .62));
     const want = viewR / Math.tan(eff) * .9;
     let tx = 0, tz = 0, ty = 0, wd = want, we = 52;
-    if (FOC.p) { const q = pos[FOC.p.no - 1]; if (q && S.people[FOC.p.no - 1] === FOC.p) { tx = q.x; tz = q.y; ty = 30; wd = 230 + (FOC.p.st || 0) * 6; we = 33; } }
+    const SP = SHOW.cur && SHOW.cur.p;
+    if (SP && pos[SP.no - 1] && S.people[SP.no - 1] === SP) { const q = pos[SP.no - 1]; tx = q.x; tz = q.y; ty = 14 + (SP.st || 0); wd = 135 + (SP.st || 0) * 5 + (SP.drache ? 40 : 0); we = 27; }
+    else if (FOC.p) { const q = pos[FOC.p.no - 1]; if (q && S.people[FOC.p.no - 1] === FOC.p) { tx = q.x; tz = q.y; ty = 30; wd = 230 + (FOC.p.st || 0) * 6; we = 33; } }
+    else if (FOC.spot) { tx = FOC.spot.x; tz = FOC.spot.z; ty = 20; wd = 300; we = 38; }
     const kk = Math.min(1, dt/550);
     cam.tx = (cam.tx || 0) + (tx - (cam.tx || 0)) * kk; cam.tz = (cam.tz || 0) + (tz - (cam.tz || 0)) * kk; cam.ty = (cam.ty || 0) + (ty - (cam.ty || 0)) * kk;
     cam.d += (wd - cam.d) * Math.min(1, dt/650); cam.e = (cam.e || 52) + (we - (cam.e || 52)) * Math.min(1, dt/650);
-    cam.a += dt * (FOC.p ? 0.00011 : 0.000022);
+    cam.a += dt * (SP ? 0.00016 : FOC.p || FOC.spot ? 0.00011 : 0.000022);
     const el = THREE.MathUtils.degToRad(cam.e);
     camera.position.set(cam.tx + Math.sin(cam.a)*Math.cos(el)*cam.d, Math.sin(el)*cam.d, cam.tz + Math.cos(cam.a)*Math.cos(el)*cam.d);
     camera.lookAt(cam.tx, cam.ty, cam.tz);
@@ -1105,7 +1702,8 @@ const R3 = (() => {
 
     renderer.render(scene, camera);
   }
-  return { render, project, rebuild(){ lastN = -1; envKey = ''; anim.clear(); tentsAnimating.clear(); } };
+  return { render, project, cmd: () => cmdPos, bigPos: k => { const i = S.plaza.indexOf(k); return i < 0 ? null : plazaSlot(i); },
+    rebuild(){ lastN = -1; envKey = ''; anim.clear(); tentsAnimating.clear(); crewDirty = true; } };
 })();
 
 /* Namensschilder (2D-Ebene über der 3D-Welt) */
@@ -1115,7 +1713,16 @@ function drawLabels(t){
   const n = S.people.length;
   if (n <= 150 && !FOC.p) {
     ctx.font = '800 10px system-ui,sans-serif';
-    for (let k = 0; k < n; k++) { if (S.people[k].st > 0) continue; const q = pos[k], [x, y] = R3.project(q.x, 0, q.y); ctx.fillStyle = 'rgba(27,31,77,.8)'; ctx.fillText((S.people[k].no <= 500 ? '★' : '') + S.people[k].no, x, y + 9); }
+    for (let k = 0; k < n; k++) { if (S.people[k].st > 0) continue; const q = pos[k], [x, y] = R3.project(q.x, 0, q.y); ctx.fillStyle = 'rgba(27,31,77,.8)'; ctx.fillText((S.people[k].no <= BANDS[0] ? '★' : '') + S.people[k].no, x, y + 9); }
+    ctx.font = '700 13px system-ui,-apple-system,sans-serif';
+  }
+  // Schilder der großen Gebäude
+  if (!FOC.p) {
+    ctx.font = '12px "Lilita One",system-ui,sans-serif';
+    S.plaza.forEach(k => { const s = R3.bigPos(k); if (!s) return; const [x, y] = R3.project(s.x, 46, s.z); const l = `${BIG[k].e} ${BIG[k].l.toUpperCase()}`, w = ctx.measureText(l).width + 16;
+      ctx.fillStyle = 'rgba(27,31,77,.88)'; rr(x - w/2, y - 11, w, 22, 11); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillText(l, x, y); });
+    const c = R3.cmd();
+    if (c) { const [x, y] = R3.project(c.x, 26, c.z); const l = `🎖️ ${c.p.n}`, w = ctx.measureText(l).width + 14; ctx.fillStyle = '#ffd23f'; rr(x - w/2, y - 10, w, 20, 10); ctx.fill(); ctx.fillStyle = '#1b1f4d'; ctx.fillText(l, x, y); }
     ctx.font = '700 13px system-ui,-apple-system,sans-serif';
   }
   let shown = 0;
@@ -1134,60 +1741,77 @@ function drawLabels(t){
   }
 }
 function bigLabel(t){
-  const p = FOC.p; if (!p) return; const q = pos[p.no - 1]; if (!q) return;
+  const p = (SHOW.cur && SHOW.cur.p) || FOC.p; if (!p) return; const q = pos[p.no - 1]; if (!q) return;
   const [x, y] = R3.project(q.x, 40 + (p.st || 0)*1.5, q.y);
   ctx.font = '22px "Lilita One",system-ui,sans-serif';
   const l1 = '@' + p.n, w = ctx.measureText(l1).width + 30;
   ctx.fillStyle = 'rgba(27,31,77,.92)'; rr(x - w/2, y - 46, w, 34, 17); ctx.fill();
   ctx.fillStyle = '#ffffff'; ctx.fillText(l1, x, y - 28);
   ctx.font = '15px "Lilita One",system-ui,sans-serif';
-  const l2 = `Stufe ${(p.st || 0) + 1} · ${STAGES[p.st || 0].n}`, w2 = ctx.measureText(l2).width + 20;
+  const l2 = `Stufe ${(p.st || 0) + 1} · ${STAGES[p.st || 0].n}${p.job ? ' · ' + JOBS[p.job].e + ' ' + jobLabel(p) : ''}`, w2 = ctx.measureText(l2).width + 20;
   ctx.fillStyle = '#ffd23f'; rr(x - w2/2, y - 10, w2, 22, 11); ctx.fill();
   ctx.fillStyle = '#1b1f4d'; ctx.fillText(l2, x, y + 1);
 }
 function rr(x, y, w, h, r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 
-let lastHud = 0, decayAcc = 0;
+/* Hilfe-Karte wechselt alle 8 Sekunden */
+const HELP = [
+  `<h5>🏗️ SO BAUST DU</h5><div class="ln">💬 1 Kommentar = <b>1 Baupunkt</b></div><div class="ln">💎 1 Münze = <b>1 Baupunkt</b></div><div class="ln">❤️ 20 Likes = <b>1 Baupunkt</b></div><div class="ln">💬 <b>haus</b> · <b>ausweis</b> → zeigen</div>`,
+  `<h5>🪖 BERUFE</h5><div class="ln">„Ich will <b>Soldat</b> werden“</div><div class="ln">🩺 Ärztin · 👮 Polizist · 👨‍🍳 Koch</div><div class="ln">🔧 Mechaniker · 🌾 Bauer · 🔦 Wache</div><div class="ln">🎖️ „<b>Kommandant</b>“ → bewerben</div>`,
+  `<h5>🎁 EXTRAS FÜRS HAUS</h5><div class="ln"><i>ab St. 2</i> 🐶 <b>!hund</b> 🌱 <b>!garten</b> 🪵 <b>!zaun</b></div><div class="ln"><i>ab St. 3</i> 🚗 <b>!auto</b> 🏍️ <b>!motorrad</b></div><div class="ln"><i>ab St. 4</i> ☀️ <b>!solar</b> · 🎨 <b>!farbe rot</b></div><div class="ln"><i>St. 6</i> 🗼 <b>!wachturm</b> · <i>St. 15</i> 🐉 <b>!drache</b></div>`,
+];
+let helpI = -1, helpT = -1e9;
+
+let lastHud = 0, decayAcc = 0, storyAcc = 0;
 function update(dt, t){
   const tm = T();
-  updFocus(t);
+  updFocus(t); updShow(t); updCards(t, dt);
   S.phaseT += dt;
   if (!S.night && S.phaseT > tm.day) startNight();
   else if (S.night && S.phaseT > tm.night) endNight();
   nightK += ((S.night ? 1 : 0) - nightK) * Math.min(1, dt/900);
   decayAcc += dt;
   if (decayAcc > tm.decay) { decayAcc = 0; S.stats.essen = clamp(S.stats.essen-1,0,100); S.stats.wasser = clamp(S.stats.wasser-1,0,100); if (S.stats.essen < 20 || S.stats.wasser < 20) S.stats.moral = clamp(S.stats.moral-1,0,100); dirty = true; }
+  if (!S.night) { storyAcc += dt; if (storyAcc > tm.story) { storyAcc = 0; story(); } }
+  // Kommandant: Bewerbungsphase, sobald die Militärbasis steht
+  if (S.plaza.includes('militaer') && !S.cmd) {
+    cmdT += dt; wantedT += dt;
+    if (wantedT > tm.wanted) { wantedT = 0; card({ type:'wanted', ms:6000 }); }
+    if (cmdT > tm.cmd && Object.keys(S.cmdApp).length) { cmdT = 0; chooseCmd(); }
+  }
   if (V.active) { $('vTimer').style.width = clamp((V.ends - t)/(V.ends - V.start)*100, 0, 100) + '%'; if (t >= V.ends) endVote(); }
   else if (t >= nextVoteAt) startVote();
-  const wall = maxR() + 40;
+  const wall = maxR() + 40, stop = S.built.includes('fallen') ? 46 : 10;
   if (S.night) { zSpawn -= dt; if (zSpawn <= 0) { zSpawn = rnd(700, 1600); zombies.push({a:rnd(0,Math.PI*2), r:wall + rnd(220,320), die:0}); } }
   for (let i = zombies.length-1; i >= 0; i--) {
     const z = zombies[i];
-    if (!z.die) { z.r -= 24*dt/1000; if (z.r <= wall + 10) { z.die = t; if (S.stats.vert < 40) zHits++; } }
+    if (!z.die) { z.r -= 24*dt/1000; if (z.r <= wall + stop) { z.die = t; if (S.stats.vert < 40 && !(stop > 10 && Math.random() < .6)) zHits++; } }
     else if (t - z.die > 700) zombies.splice(i, 1);
   }
   if (!S.night && nightK < .05) zombies.length = 0;
+  if (t - helpT > 8000) { helpT = t; helpI = (helpI + 1) % HELP.length; const hb = $('helpBox'); hb.innerHTML = HELP[helpI]; hb.style.animation = 'none'; void hb.offsetWidth; hb.style.animation = ''; }
   if (t - lastHud > 250) {
     lastHud = t;
     $('cDay').textContent = (S.night ? '🌙 NACHT ' : 'TAG ') + S.day;
     $('cPop').textContent = `👥 ${fmt(S.people.length)} Überlebende`;
     $('cRes').textContent = `🧱 ${fmt(S.res)}`;
     $('cLikes').textContent = `❤️ ${fmt(S.likes)}`;
+    $('cWall').textContent = `${WALLS[S.wallLv].e} ${WALLS[S.wallLv].n}`;
     $('bEssen').style.width = S.stats.essen + '%'; $('bWasser').style.width = S.stats.wasser + '%';
     $('bVert').style.width = S.stats.vert + '%'; $('bMoral').style.width = S.stats.moral + '%';
     const fp = FOC.p;
-    $('focus').classList.toggle('hidden', !fp); $('info').classList.toggle('hidden', !!fp);
-    if (fp) {
+    $('focus').classList.toggle('hidden', !fp || !!cardOn); $('info').classList.toggle('hidden', !!fp || !!cardOn);
+    if (fp && !cardOn) {
       const st = fp.st || 0, s0 = STAGES[st], nx = STAGES[st + 1], v = pts(fp);
       $('fAv').textContent = (fp.n[0] || '?').toUpperCase(); $('fAv').style.background = COLORS[hash(fp.u) % COLORS.length];
-      $('fName').textContent = '@' + fp.n; $('fSt').textContent = `${s0.e} Stufe ${st + 1} · ${s0.n}`;
+      $('fName').textContent = '@' + fp.n; $('fSt').textContent = `${s0.e} Stufe ${st + 1} · ${s0.n}${fp.job ? ' · ' + JOBS[fp.job].e + ' ' + jobLabel(fp) : ''}  ${upList(fp).map(k => UPG[k].e).join('')}`;
       $('fBadge').classList.toggle('hidden', !(fp.lu && t - fp.lu < 8000 && (t - fp.lu) >= 0));
       if (nx) { const need = nx.p - v; $('fBar').style.width = clamp((v - s0.p)/(nx.p - s0.p)*100, 2, 100) + '%';
-        $('fNext').innerHTML = `<b>${fmt(v)} / ${fmt(nx.p)}</b> Baupunkte · noch ${fmt(need)} 💎 oder ${fmt(need * LIKES_PER_BP)} ❤️ bis <b>Stufe ${st + 2} · ${esc(nx.n)}</b>`; }
+        $('fNext').innerHTML = `<b>${fmt(v)} / ${fmt(nx.p)}</b> Baupunkte · noch ${fmt(need)} 💬/💎 oder ${fmt(need * LIKES_PER_BP)} ❤️ bis <b>Stufe ${st + 2} · ${esc(nx.n)}</b>`; }
       else { $('fBar').style.width = '100%'; $('fNext').innerHTML = '<b>Höchste Stufe erreicht!</b> 🐉'; }
-    } else {
+    } else if (!fp) {
       const top = S.people.filter(p => pts(p) > 0).sort((a, b) => pts(b) - pts(a)).slice(0, 3);
-      $('topList').innerHTML = top.length ? top.map((p, i) => `<div class="ln"><span class="rk">${i + 1}</span>${esc(p.n)} · ${STAGES[p.st || 0].e} St. ${(p.st || 0) + 1}</div>`).join('') : '<div class="ln">Noch niemand – schick ein Geschenk!</div>';
+      $('topList').innerHTML = top.length ? top.map((p, i) => `<div class="ln"><span class="rk">${i + 1}</span>${esc(p.n)} <i>${STAGES[p.st || 0].e} St. ${(p.st || 0) + 1}</i><span class="bp">${fmt(pts(p))} BP</span></div>`).join('') : '<div class="ln">Noch niemand – schreib einen Kommentar!</div>';
     }
     const g = GOALS[S.milestone];
     $('goal').innerHTML = g ? `🎯 Nächstes Ziel: <b>${fmt(g[0])}</b> Überlebende → ${esc(g[1])} <span style="opacity:.7">(${fmt(S.people.length)}/${fmt(g[0])})</span>` : '🏆 Alle Ziele erreicht!';
