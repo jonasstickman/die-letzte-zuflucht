@@ -89,6 +89,7 @@
   /* Nahaufnahme: Haus groß im Bild */
   #info,#focus,#card,#goal,#bottom,#watch{transition:opacity .45s ease}
   body.showing #info,body.showing #focus,body.showing #card,body.showing #goal,body.showing #bottom,body.showing #watch{opacity:0}
+  body.showing #focus,body.showing #card{visibility:hidden} /* sonst zeigt die Tafel eine andere Person als die Nahaufnahme */
   #show{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 10vh);text-align:center;pointer-events:none;z-index:3;padding:0 4vw}
   #show .big{font-size:clamp(30px,5.6vh,66px);line-height:1.05;color:#fff;
     text-shadow:0 .07em 0 #1b1f4d,.07em 0 0 #1b1f4d,-.07em 0 0 #1b1f4d,0 -.07em 0 #1b1f4d,.05em .05em 0 #1b1f4d,-.05em .05em 0 #1b1f4d,.05em -.05em 0 #1b1f4d,-.05em -.05em 0 #1b1f4d,0 .14em 0 rgba(0,0,0,.25)}
@@ -372,14 +373,31 @@ const jobLabel = p => p.job ? (p.jl || JOBS[p.job].n) : null;
 
 /* Kamera-Fokus auf ein Haus */
 const FOC = { p:null, until:0, q:[] };
-function focus(p, ms){
+let freeTop = 0; // Unterkante der oberen Tafeln (Pixel) – darunter ist das Bild frei
+// voice = Satz, der erst gesprochen wird, wenn die Kamera wirklich bei diesem Haus ist
+// now = sofort hinspringen (z. B. weil gerade die Karte dieser Person gezeigt wird)
+function focus(p, ms, voice, jump){
   if (!p) return;
-  if (FOC.p === p) { FOC.until = Math.max(FOC.until, now() + ms); return; }
-  if (!FOC.p) { FOC.p = p; FOC.until = now() + ms; return; }
-  if (!FOC.q.find(x => x[0] === p)) FOC.q.push([p, ms]);
+  if (FOC.p === p) { FOC.until = Math.max(FOC.until, now() + ms); if (voice) sayNow(voice); return; }
+  if (!FOC.p || jump) {
+    FOC.q = FOC.q.filter(x => x[0] !== p);
+    FOC.p = p; FOC.until = now() + ms;
+    if (voice && !SHOW.cur) sayNow(voice); else if (voice) FOC.v = voice;
+    return;
+  }
+  const ex = FOC.q.find(x => x[0] === p);
+  if (ex) { ex[1] = Math.max(ex[1], ms); if (voice) ex[2] = voice; return; }
+  FOC.q.push([p, ms, voice || null]);
   if (FOC.q.length > 6) FOC.q.shift();
 }
-function updFocus(t){ if (FOC.p && t > FOC.until) { const n = FOC.q.shift(); if (n) { FOC.p = n[0]; FOC.until = t + n[1]; } else FOC.p = null; } }
+function updFocus(t, dt){
+  if (SHOW.cur) { if (FOC.p) FOC.until += dt; return; } // während einer Nahaufnahme läuft die Zeit nicht ab
+  if (FOC.v) { sayNow(FOC.v); FOC.v = null; }
+  if (FOC.p && t > FOC.until) {
+    const n = FOC.q.shift();
+    if (n) { FOC.p = n[0]; FOC.until = t + n[1]; if (n[2]) sayNow(n[2]); } else FOC.p = null;
+  }
+}
 const COLORS = ['#e5484d','#f76b15','#ffc53d','#46a758','#0090ff','#8e4ec6','#d6409f','#12a594','#ab6400','#3e63dd'];
 const hash = s => { let h = 2166136261; for (const c of String(s)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
 
@@ -459,7 +477,7 @@ function updCards(t, dt){
   cardOn = c; cardUntil = t + (c.ms || 5500);
   el.innerHTML = cardHTML(c); el.classList.remove('hidden');
   el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
-  if (c.p && c.type !== 'msg') focus(c.p, c.ms || 5500);
+  if (c.p && c.type !== 'msg') focus(c.p, c.ms || 5500, null, true);
 }
 
 /* ---------- Stimme (Sprachausgabe des Geräts, Deutsch) ---------- */
@@ -495,6 +513,11 @@ function say(text, prio = 1){
   if (sayQ.length >= 4) { let i = -1, lo = prio; sayQ.forEach((x, j) => { if (x.prio < lo) { lo = x.prio; i = j; } }); if (i < 0) return; sayQ.splice(i, 1); }
   sayQ.push({ text, prio }); nextSay();
 }
+// gehört zum Bild, das gerade gezeigt wird → vor alle anderen Sätze
+function sayNow(text){
+  if (!OPT.voice || !SS || !text) return;
+  sayQ.unshift({ text, prio: 9 }); if (sayQ.length > 5) sayQ.pop(); nextSay();
+}
 function nextSay(){
   if (!SS) return;
   if (speaking && now() - speakT > 12000) speaking = false; // falls das Gerät hängt
@@ -514,29 +537,40 @@ addEventListener('pointerdown', () => { if (unlocked || !SS) return; unlocked = 
 // Danke fürs Folgen – mehrere Follower werden zusammengefasst
 let followBuf = [], followT = null;
 function thankFollow(p){
-  followBuf.push(cleanName(p.n));
+  followBuf.push(p);
   if (followT) return;
   followT = setTimeout(() => {
-    const b = followBuf; followBuf = []; followT = null;
+    const ps = followBuf; followBuf = []; followT = null;
+    const b = ps.map(x => cleanName(x.n));
     let t;
     if (b.length === 1) t = pick([`Danke fürs Folgen, ${b[0]}! Willkommen in der letzten Zuflucht.`, `${b[0]} ist eingezogen. Schön, dass du da bist!`, `Willkommen im Camp, ${b[0]}! Dein Zelt steht schon.`, `Danke, ${b[0]}! Ab jetzt überlebst du mit uns.`]);
     else if (b.length <= 3) t = `Danke fürs Folgen, ${b.slice(0, -1).join(', ')} und ${b[b.length - 1]}!`;
     else t = `Danke an ${b[0]}, ${b[1]} und ${b.length - 2} weitere fürs Folgen!`;
+    // ein einzelner Follower: Danke erst, wenn sein Zelt im Bild ist
+    if (ps.length === 1 && voiceFor(ps[0], t)) return;
     say(t, 1);
   }, 2500);
 }
 
 /* ---------- Nahaufnahme: Kamera fliegt zum Haus, großer Text ---------- */
 const SHOW = { cur:null, until:0, q:[] };
+// Die Stimme wird erst gesprochen, wenn die Kamera bei genau diesem Haus ankommt.
 function showcase(p, big, small, voice, prio = 2, ms = 5500){
   if (!p) return;
-  if (voice) say(voice, prio);
-  if (!OPT.show) { focus(p, ms); return; }
-  if (SHOW.cur && SHOW.cur.p === p) { Object.assign(SHOW.cur, { big, small }); SHOW.until = Math.max(SHOW.until, now() + ms * .8); renderShow(); return; }
+  if (!OPT.show) { focus(p, ms, voice); return; }
+  if (SHOW.cur && SHOW.cur.p === p) { Object.assign(SHOW.cur, { big, small }); SHOW.until = Math.max(SHOW.until, now() + ms * .8); renderShow(); if (voice) sayNow(voice); return; }
   const ex = SHOW.q.find(x => x.p === p);
-  if (ex) { Object.assign(ex, { big, small, ms: Math.max(ex.ms, ms), prio: Math.max(ex.prio, prio) }); return; }
+  if (ex) { Object.assign(ex, { big, small, ms: Math.max(ex.ms, ms), prio: Math.max(ex.prio, prio) }); if (voice) ex.voice = voice; return; }
   if (SHOW.q.length >= 4) { let i = -1, lo = prio; SHOW.q.forEach((x, j) => { if (x.prio < lo) { lo = x.prio; i = j; } }); if (i < 0) return; SHOW.q.splice(i, 1); }
-  SHOW.q.push({ p, big, small, ms, prio });
+  SHOW.q.push({ p, big, small, ms, prio, voice: voice || null });
+}
+// Satz an ein Haus hängen, das schon gezeigt wird oder in der Warteschlange steht
+function voiceFor(p, text){
+  if (SHOW.cur && SHOW.cur.p === p) { sayNow(text); return true; }
+  const ex = SHOW.q.find(x => x.p === p); if (ex) { ex.voice = text; return true; }
+  if (FOC.p === p && !SHOW.cur) { sayNow(text); return true; }
+  const fx = FOC.q.find(x => x[0] === p); if (fx) { fx[2] = text; return true; }
+  return false;
 }
 function renderShow(){ const s = SHOW.cur; if (!s) return; $('show').innerHTML = `<div class="pop"><div class="big">${esc(s.big)}</div>${s.small ? `<div class="small">${esc(s.small)}</div>` : ''}</div>`; }
 function updShow(t){
@@ -544,6 +578,7 @@ function updShow(t){
   const n = SHOW.q.shift();
   if (!n) { if (SHOW.cur) { SHOW.cur = null; document.body.classList.remove('showing'); const el = $('show'); el.firstChild && el.firstChild.classList.add('out'); setTimeout(() => { if (!SHOW.cur) el.innerHTML = ''; }, 350); } return; }
   SHOW.cur = n; SHOW.until = t + n.ms; document.body.classList.add('showing'); renderShow();
+  if (n.voice) { sayNow(n.voice); n.voice = null; }
 }
 
 /* ---------- Spiel-Logik ---------- */
@@ -588,9 +623,10 @@ function gift(u, name, d){
   feed(`🎁 ${p.n} schickt ${fmt(d)} 💎 · +${fmt(d)} Baupunkte`, true);
   const st0 = p.st || 0, nm = cleanName(p.n);
   addPts(p);
-  if ((p.st || 0) > st0) say(`Danke für das Geschenk, ${nm}!`, d >= 10 ? 2 : 0);
+  if ((p.st || 0) > st0) { const it = (SHOW.cur && SHOW.cur.p === p) ? null : SHOW.q.find(x => x.p === p);
+    if (it) it.voice = `Danke für das Geschenk, ${nm}! ` + (it.voice || ''); else if (!voiceFor(p, `Danke für das Geschenk, ${nm}!`)) focus(p, 4000, `Danke für das Geschenk, ${nm}!`); }
   else if (d >= 5) showcase(p, '🎁 DANKE!', `@${p.n} schickt ${fmt(d)} 💎`, `Danke für ${fmt(d)} Münzen, ${nm}!`, d >= 30 ? 3 : 2, 4500);
-  else { focus(p, 4000); say(pick([`Danke, ${nm}!`, `Danke für das Geschenk, ${nm}!`]), 0); }
+  else focus(p, 4000, pick([`Danke, ${nm}!`, `Danke für das Geschenk, ${nm}!`]));
 }
 function like(u, name, n){
   S.likes += n; S.likeBank += n;
@@ -922,6 +958,25 @@ $('panel').addEventListener('click', ev => {
   updStatus();
 });
 setInterval(() => { if (dirty && !demo) { store.set(S); dirty = false; } }, 4000);
+
+/* ---------- Daten für die Bewohner-Seite (/haus) ----------
+   Nur die Karte, die mit ?key=DEIN_SCHLÜSSEL geöffnet wird, schickt den Stand an den Server. */
+const PUB_KEY = new URLSearchParams(location.search).get('key');
+let lastPub = '';
+function publish(){
+  if (!LIVE || !PUB_KEY || demo) return;
+  const people = S.people.map(p => {
+    const j = p.job ? JOBS[p.job] : null;
+    return { u:p.u, n:p.n, no:p.no, d:district(p.no), st:stage(p), pts:pts(p), g:p.g || 0, k:p.k || 0, l:p.l || 0,
+      job: j ? j.e + ' ' + jobLabel(p) : null, cmd: S.cmd === p.u, c: p.c || null,
+      ups: upList(p).map(k => UPG[k].e + ' ' + UPG[k].n) };
+  });
+  const body = JSON.stringify({ day:S.day, stats:S.stats, stages:STAGES.map(s => ({ n:s.n, p:s.p, e:s.e })), people });
+  if (body === lastPub) return;
+  fetch('/api/camp?key=' + encodeURIComponent(PUB_KEY), { method:'POST', headers:{ 'content-type':'application/json' }, body })
+    .then(r => { if (r.ok) lastPub = body; }).catch(() => {});
+}
+setInterval(publish, 5000);
 
 /* ---------- 3D-Welt (three.js) ---------- */
 const R3 = (() => {
@@ -1721,6 +1776,25 @@ const R3 = (() => {
     cam.tx = (cam.tx || 0) + (tx - (cam.tx || 0)) * kk; cam.tz = (cam.tz || 0) + (tz - (cam.tz || 0)) * kk; cam.ty = (cam.ty || 0) + (ty - (cam.ty || 0)) * kk;
     cam.d += (wd - cam.d) * Math.min(1, dt/650); cam.e = (cam.e || 52) + (we - (cam.e || 52)) * Math.min(1, dt/650);
     cam.a += dt * (SP ? 0.00016 : FOC.p || FOC.spot ? 0.00011 : 0.000022);
+    // Haus nicht unter den Tafeln verstecken: Bild so verschieben, dass das Haus
+    // (mit Namensschild darüber) in der Mitte der freien Fläche zwischen oben und unten steht
+    let offY = 0;
+    if ((SP && S.people[SP.no - 1] === SP) || (FOC.p && S.people[FOC.p.no - 1] === FOC.p)) {
+      if (t - (cam.freeT || 0) > 300) {
+        cam.freeT = t;
+        const showing = document.body.classList.contains('showing');
+        const tc = document.querySelector('#hud .top');
+        const hb = showing ? (tc ? tc.getBoundingClientRect().bottom : 0) : $('hud').getBoundingClientRect().bottom;
+        freeTop = hb;
+        const bt = showing ? (($('show').firstChild && $('show').firstChild.getBoundingClientRect().top) || H * .78) : $('bottom').getBoundingClientRect().top;
+        const top = Math.max(0, hb), bot = Math.max(top + 120, Math.min(H, bt));
+        cam.free = clamp(Math.max(top + 120, top + (bot - top) * .62), H * .3, H * .82);
+      }
+      offY = H / 2 - (cam.free || H / 2);
+    }
+    cam.off = (cam.off || 0) + (offY - (cam.off || 0)) * Math.min(1, dt / 450);
+    if (Math.abs(cam.off) < .5 && offY === 0) { if (camera.view && camera.view.enabled) camera.clearViewOffset(); }
+    else camera.setViewOffset(W, H, 0, cam.off, W, H);
     const el = THREE.MathUtils.degToRad(cam.e);
     camera.position.set(cam.tx + Math.sin(cam.a)*Math.cos(el)*cam.d, Math.sin(el)*cam.d, cam.tz + Math.cos(cam.a)*Math.cos(el)*cam.d);
     camera.lookAt(cam.tx, cam.ty, cam.tz);
@@ -1769,7 +1843,7 @@ function drawLabels(t){
 }
 function bigLabel(t){
   const p = (SHOW.cur && SHOW.cur.p) || FOC.p; if (!p) return; const q = pos[p.no - 1]; if (!q) return;
-  const [x, y] = R3.project(q.x, 40 + (p.st || 0)*1.5, q.y);
+  const r = R3.project(q.x, 14 + (p.st || 0)*2.2, q.y), x = r[0], y = Math.max(r[1], freeTop + 56); // nie unter der Tafel
   ctx.font = '22px "Lilita One",system-ui,sans-serif';
   const l1 = '@' + p.n, w = ctx.measureText(l1).width + 30;
   ctx.fillStyle = 'rgba(27,31,77,.92)'; rr(x - w/2, y - 46, w, 34, 17); ctx.fill();
@@ -1792,7 +1866,7 @@ let helpI = -1, helpT = -1e9;
 let lastHud = 0, decayAcc = 0, storyAcc = 0;
 function update(dt, t){
   const tm = T();
-  updFocus(t); updShow(t); updCards(t, dt);
+  updShow(t); updFocus(t, dt); updCards(t, dt);
   S.phaseT += dt;
   if (!S.night && S.phaseT > tm.day) startNight();
   else if (S.night && S.phaseT > tm.night) endNight();
